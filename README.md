@@ -2,7 +2,7 @@
 
 Why Web components, zero dependency's and all benifits of resuability.  Just drop it in the project and use it.  
 These `Custom Elments` are now native to JavaScript. Read more about it 
-[https://developer.mozilla.org/en-US/docs/Web/Web_Components](MDN - Web Components - Concepts and usage)
+(MDN - Web Components - Concepts and usage)[https://developer.mozilla.org/en-US/docs/Web/Web_Components]
 
 ### Including all
 
