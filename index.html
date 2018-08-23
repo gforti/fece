@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            :root {
+                --primary: #006AAD;
+                --on-primary: #DBF1FF;
+                --accent: #FFAE00;                
+                --on-accent: black;
+                
+                --background: white;
+                --on-background: #777;
+                --surface: #DBF1FF;
+                --on-surface: $999;
+                
+            }
+            div {
+                width: 230px;
+            }
+            
+            .orange  {
+              stroke: #ff9f00;
+            }
+
+            .green {
+              stroke: #4CC790;
+            }
+
+            .blue {
+              stroke: #3c9ee5;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- <div><circular-percentage data-percent="99"></circular-percentage></div> -->
+        <button class="a">Change</button>
+            <!-- <modal-content data-show="true">Modal content</modal-content> -->
+         <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /> 
+         <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+         <div> <circular-percentage data-percent="99"></circular-percentage></div>
+        <button class="b">Change</button>
+        
+        <script type="module" src="index.js"></script>
+        
+        <script>
+            
+            document.querySelector('button.a').addEventListener('click', ()=>{
+                document.querySelector('circular-percentage').dataset.percent = Math.floor(Math.random() * 100) +1
+            })
+            
+             document.querySelector('button.b').addEventListener('click', ()=>{
+                document.querySelector('circular-percentage').dataset.percent = Math.floor(Math.random() * 100) +1
+            })
+            
+        </script>
+    </body>
+</html>
