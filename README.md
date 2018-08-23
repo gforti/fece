@@ -24,4 +24,4 @@ One included on the tag will be available.
 
 ```html
 <circular-percentage data-percent="50"></circular-percentage>
-``
+```
