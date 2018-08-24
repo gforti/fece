@@ -2,7 +2,7 @@
   "name": "fece",
   "description": "Front End Custom Elements",
   "author": "Gabriel Forti <gnforti@gmail.com>",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "keywords": [
     "custom",
