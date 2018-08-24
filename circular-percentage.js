@@ -78,12 +78,14 @@ class circularPercentage extends HTMLElement {
         this.svgText = this.div.querySelector('text.percentage')
     }
 
-    connectedCallback() {
-        this.render()
+    connectedCallback() {        
         window.addEventListener('scroll', this.scrollCheck)
         this.svgPath.addEventListener('animationiteration', ()=>{
             this.svgPath.style.webkitAnimationPlayState="paused";
         })
+        this.checkViewPort()
+        this.render()
+       
     }
 
     static get observedAttributes() {
@@ -98,11 +100,12 @@ class circularPercentage extends HTMLElement {
 
     render() {        
         this.svgText.innerHTML = `${this.dataset.percent}%`        
-        this.svgPath.setAttribute('stroke-dasharray', `${this.dataset.percent}, 100`)
-        if ( this.svgPath.classList.contains('fill-in') ) {
-            const clone = this.svg.cloneNode(true);
+        if ( this.svgPath.classList.contains('fill-in') ) {    
+            this.svgPath.setAttribute('stroke-dasharray', `${this.dataset.percent}, 100`)
+            const clone = this.svg.cloneNode(true);            
             this.div.replaceChild(clone, this.svg);
             this.setSelectors()
+            
         }        
         
     }
@@ -110,7 +113,8 @@ class circularPercentage extends HTMLElement {
     checkViewPort() {
         if ( this.svgPath.getBoundingClientRect().top <= window.innerHeight * 0.75 
              && this.svgPath.getBoundingClientRect().top > 0) {
-          this.svgPath.classList.add('fill-in','blue')
+          this.svgPath.classList.add('fill-in')
+          this.render()
           window.removeEventListener('scroll', this.scrollCheck)
         }
     }
