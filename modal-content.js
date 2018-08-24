@@ -66,6 +66,9 @@ function generateTemplate() {
                 top: 20px;
                 width: 40px;
                 cursor: pointer;
+                color: #FFF;
+                border-radius: 50px;
+                font-weight: bold;
             }
 
         </style>
