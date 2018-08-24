@@ -4,6 +4,14 @@ Why Web components, zero dependency's and all benefits of reusability.  Just dro
 These `Custom Elements` are now native to JavaScript. Read more about it
 [MDN - Web Components - Concepts and usage](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
 
+### Getting Started
+
+if you will be packaging your app you can save it has a dev dependency
+
+```sh
+$ npm install fece --save-dev
+```
+
 ### Including all
 
 Might be be recommended but you can include all the elements with the following import
