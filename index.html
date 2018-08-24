@@ -14,7 +14,7 @@
                 --background: white;
                 --on-background: #777;
                 --surface: #DBF1FF;
-                --on-surface: $999;
+                --on-surface: #999;
                 
             }
             div {
@@ -32,17 +32,31 @@
             .blue {
               stroke: #3c9ee5;
             }
+            
+            score-card.blue {
+                --on-surface: #3c9ee5;
+            }
         </style>
     </head>
     <body>
         <!-- <div><circular-percentage data-percent="99"></circular-percentage></div> -->
         <button class="a">Change</button>
         <div><circular-percentage data-percent="59"></circular-percentage></div>
+        
+        <custom-message id="test">
+            <span slot="header">header text</span>
+            <span slot="message">body text stuff</span>
+        </custom-message>
+    
+    <score-card data-score="30" class="blue"></score-card>
+    <score-card data-score="30"></score-card>
+    
             <!-- <modal-content data-show="true">Modal content</modal-content> -->
          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /> 
          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
          <div> <circular-percentage data-percent="99"></circular-percentage></div>
         <button class="b">Change</button>
+        
         
         <script type="module" src="index.js"></script>
         

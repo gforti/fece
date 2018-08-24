@@ -1,6 +1,5 @@
 /*
  * <score-card></score-card>
- * <script src="score-card.element.js"></script>
  */
 function generateTemplate() {
 
@@ -8,7 +7,7 @@ function generateTemplate() {
 
     template.innerHTML = `
         <style>
-            :host h1 {
+            h1 {
               font-size: 2.5rem;
               color: var(--on-surface, red);
             }

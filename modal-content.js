@@ -25,12 +25,11 @@ function generateTemplate() {
             }
             .modal-background {
                 background-color: rgba(10,10,10,.86);
-    bottom: 0;
+                bottom: 0;
                 left: 0;
                 position: absolute;
                 right: 0;
-                top: 0;
-                
+                top: 0;                
             }
             .modal-content {
                 margin: 0 20px;
@@ -69,7 +68,6 @@ function generateTemplate() {
                 cursor: pointer;
             }
 
-
         </style>
         <div class="modal is-active">
             <div class="modal-background"></div>
@@ -90,10 +88,11 @@ class ModalContent extends HTMLElement {
       shadowRoot.appendChild(generateTemplate().content.cloneNode(true));
       this.btnDelete = this.shadowRoot.querySelector('button')
       this.modal = this.shadowRoot.querySelector('div.modal')
+      this.btnClickBind = this.btnClick.bind(this)
     }
 
     connectedCallback() {
-        this.btnDelete.addEventListener('click', this.btnClick.bind(this))
+        this.btnDelete.addEventListener('click', this.btnClickBind)
         this.render()
     }
 
@@ -109,7 +108,7 @@ class ModalContent extends HTMLElement {
 
     disconnectedCallback() {
       // remove event listeners
-        this.btnDelete.removeEventListener('click', this.btnClick.bind(this))
+        this.btnDelete.removeEventListener('click', this.btnClickBind)
     }
 
     render() {
@@ -123,7 +122,6 @@ class ModalContent extends HTMLElement {
         this.dataset.show = false
         this.dispatchEvent(new CustomEvent('delete-clicked'))
     }
-
 
 }
 

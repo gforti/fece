@@ -84,8 +84,7 @@ class circularPercentage extends HTMLElement {
             this.svgPath.style.webkitAnimationPlayState="paused";
         })
         this.checkViewPort()
-        this.render()
-       
+        this.render()       
     }
 
     static get observedAttributes() {
@@ -104,8 +103,7 @@ class circularPercentage extends HTMLElement {
             this.svgPath.setAttribute('stroke-dasharray', `${this.dataset.percent}, 100`)
             const clone = this.svg.cloneNode(true);            
             this.div.replaceChild(clone, this.svg);
-            this.setSelectors()
-            
+            this.setSelectors()            
         }        
         
     }
