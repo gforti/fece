@@ -7,7 +7,9 @@ function generateTemplate() {
     template.innerHTML = `
         <style>   
            .content {
-                position: relative;          
+                position: relative; 
+                background-color: var(--background, transparent);
+                color: var(--on-background, initial);
            }          
         </style>
         <div class="content">

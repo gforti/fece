@@ -15,12 +15,12 @@ function generateTemplate() {
                 align-items: center;
                 justify-content: center; 
                 z-index: 9999;
-           }
+            }
             svg{
              display: flex;
              height: 100%;
              transition: transform .2s ease-out;
-           }
+            }
            svg:hover {
                 transform: scale(1.2);
             }
