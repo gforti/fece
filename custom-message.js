@@ -101,7 +101,6 @@ class CustomMessage extends HTMLElement {
 
     connectedCallback() {
         this.btnDelete.addEventListener('click', this.btnClickbind)
-        this.render()
     }
 
     disconnectedCallback() {

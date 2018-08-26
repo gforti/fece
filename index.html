@@ -17,7 +17,7 @@
                 --on-surface: #999;
                 
             }
-            div {
+            div, content-box {
                 width: 230px;
             }
             
@@ -41,7 +41,12 @@
     <body>
         <!-- <div><circular-percentage data-percent="99"></circular-percentage></div> -->
         <button class="a">Change</button>
-        <div><circular-percentage data-percent="59"></circular-percentage></div>
+        <content-box>
+            <div>
+                <content-loader data-show="true"></content-loader>
+                <circular-percentage data-percent="59" class="first"></circular-percentage>
+            </div>
+        </content-box>
         
         <custom-message id="test">
             <span slot="header">header text</span>
@@ -54,7 +59,7 @@
             <!-- <modal-content data-show="true">Modal content</modal-content> -->
          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /> 
          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-         <div> <circular-percentage data-percent="99"></circular-percentage></div>
+         <div> <circular-percentage data-percent="99" class="second"></circular-percentage></div>
         <button class="b">Change</button>
         
         
@@ -62,12 +67,17 @@
         
         <script>
             
+            const loader = document.querySelector('content-loader')
+            setInterval(()=>{
+                loader.dataset.show= loader.dataset.show === 'true' ? 'false' : 'true'
+            },2000)
+            
             document.querySelector('button.a').addEventListener('click', ()=>{
-                document.querySelector('circular-percentage').dataset.percent = Math.floor(Math.random() * 100) +1
+                document.querySelector('circular-percentage.first').dataset.percent = Math.floor(Math.random() * 100) +1
             })
             
              document.querySelector('button.b').addEventListener('click', ()=>{
-                document.querySelector('circular-percentage').dataset.percent = Math.floor(Math.random() * 100) +1
+                document.querySelector('circular-percentage.second').dataset.percent = Math.floor(Math.random() * 100) +1
             })
             
         </script>
