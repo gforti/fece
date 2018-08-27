@@ -48,7 +48,9 @@
         <div><circular-percentage data-percent="59" class="first"></circular-percentage></div>
     </content-loader>
                 
-            
+    <on-off></on-off>
+    
+    <power-button></power-button>
        
         
         <custom-message id="test">
@@ -81,6 +83,10 @@
             
              document.querySelector('button.b').addEventListener('click', ()=>{
                 document.querySelector('circular-percentage.second').dataset.percent = Math.floor(Math.random() * 100) +1
+            })
+            
+            document.querySelector('on-off').addEventListener('on-off-change', (e)=>{
+                console.log(e.detail)
             })
             
         </script>
