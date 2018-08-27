@@ -5,11 +5,7 @@ function generateTemplate() {
     template.innerHTML = `
         <style>
            label {
-            display: block;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-                    transform: translate(-50%, -60%);
+            display: inline-flex;            
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
           }
           label:focus, label:active {
