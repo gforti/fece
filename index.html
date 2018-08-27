@@ -17,7 +17,7 @@
                 --on-surface: #999;
                 
             }
-            div, content-box {
+            div {
                 width: 230px;
             }
             
@@ -36,17 +36,20 @@
             score-card.blue {
                 --on-surface: #3c9ee5;
             }
+            
         </style>
     </head>
     <body>
         <!-- <div><circular-percentage data-percent="99"></circular-percentage></div> -->
         <button class="a">Change</button>
-        <content-box>
-            <div>
-                <content-loader data-show="true"></content-loader>
-                <circular-percentage data-percent="59" class="first"></circular-percentage>
-            </div>
-        </content-box>
+        
+            
+    <content-loader data-show="true">
+        <div><circular-percentage data-percent="59" class="first"></circular-percentage></div>
+    </content-loader>
+                
+            
+       
         
         <custom-message id="test">
             <span slot="header">header text</span>

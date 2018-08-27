@@ -4,7 +4,21 @@ function generateTemplate() {
 
     template.innerHTML = `
         <style>   
-           .content {
+            .content {
+                position: relative; 
+                background-color: var(--background, transparent);
+                color: var(--on-background, initial);
+                display: inline-flex;
+                box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                transition: 0.3s;
+                margin: 1rem;
+                padding: 1rem;
+           }      
+    
+           .content:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            }
+           .loader {
                 width: 100%;
                 height: 100%;
                 position: absolute;
@@ -16,50 +30,47 @@ function generateTemplate() {
                 justify-content: center; 
                 z-index: 9999;
             }
-            svg{
-             display: flex;
-             height: 100%;
-             transition: transform .2s ease-out;
+            .dual-ring {
+                display: inline-block;
+                width: 64px;
+                height: 64px;
+                transition: transform .2s ease-out;
             }
-           svg:hover {
+            .dual-ring:after {
+                content: " ";
+                display: block;
+                width: 46px;
+                height: 46px;
+                margin: 1px;
+                border-radius: 50%;
+                border: 5px solid var(--on-background, #000);;
+                border-left-color: transparent;
+                border-right-color: transparent;
+                animation: dual-ring 1.2s linear infinite;                
+    
+            }
+            @keyframes dual-ring {
+                0% {
+                  transform: rotate(0deg);
+                }
+                100% {
+                  transform: rotate(360deg);
+                }
+            }
+
+           .dual-ring:hover {
                 transform: scale(1.2);
             }
-            svg circle {
-                fill: var(--on-background, #000);
-            }
-           .content.is-active {
-               display: flex;
+            
+           .loader.is-active {
+               display: inline-flex;
            }
        </style>
         <div class="content">
-            <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-                <circle  stroke="none" cx="6" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.1"/>    
-                </circle>
-                <circle  stroke="none" cx="26" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite" 
-                    begin="0.2"/>       
-                </circle>
-                <circle  stroke="none" cx="46" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite" 
-                    begin="0.3"/>     
-                </circle>
-              </svg>
-
+            <div class="loader">
+                <div class="dual-ring"></div>
+              </div>
+            <slot></slot>
         </div>
          
     `;
@@ -72,7 +83,7 @@ class contentLoader extends HTMLElement {
       super();
       const shadowRoot = this.attachShadow({ mode: 'open' });
       shadowRoot.appendChild(generateTemplate().content.cloneNode(true));
-      this.content = this.shadowRoot.querySelector('div.content')
+      this.loader = this.shadowRoot.querySelector('div.loader')
     }
 
     connectedCallback() {
@@ -91,9 +102,9 @@ class contentLoader extends HTMLElement {
 
     render() {
         if (this.dataset.show.toLowerCase() === 'true')
-            this.content.classList.add('is-active')
+            this.loader.classList.add('is-active')
         else 
-            this.content.classList.remove('is-active')
+            this.loader.classList.remove('is-active')
     }
 
 }
