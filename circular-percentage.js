@@ -80,9 +80,6 @@ class circularPercentage extends HTMLElement {
 
     connectedCallback() {        
         window.addEventListener('scroll', this.scrollCheck)
-        this.svgPath.addEventListener('animationiteration', ()=>{
-            this.svgPath.style.webkitAnimationPlayState="paused";
-        })
         this.checkViewPort()
         this.render()       
     }
