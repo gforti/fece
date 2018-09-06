@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            
+            body {
+                background-color: green;
+            }
+            
+            svg-h {
+                width: 200px;
+    height: 200px;
+            }
+            
+       
+        </style>
+    </head>
+    <body>
+        
+        <!--
+        <div>
+            
+            <svg class="circle-chart" viewbox="0 0 180 180" width="180" height="180" >
+            <circle class="circle-chart__background" stroke="#efefef" stroke-width="10" fill="none" cx="90" cy="90" r="85" />
+            <circle class="circle-chart__circle" stroke="#00acc1" stroke-width="10" stroke-dasharray="134,534" stroke-linecap="round" fill="none" cx="90" cy="90" r="85" />
+          </svg>
+            
+        </div>
+        
+        
+        
+        <svg xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="40" stroke="black" stroke-width="10" fill="red" stroke-dasharray="1000" />
+      </svg>
+
+      -->
+      
+      <svg viewbox="0 0 200 200"  id="doughnut-chart">
+	 <!--  <circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(0,255,0,1)" data-value="2"/>
+       <circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(255,0,0,1)" data-value="90"/>
+	<circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(0,0,255,1)" data-value="2"/>
+	<circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(0,0,0,1)" data-value="6"/> -->
+        <!-- <path class="circle-bg"
+              stroke="rgba(230,230,230,0.8)"
+                fill="transparent"
+                stroke-width="3"
+               d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"
+             />
+         
+        <path class="circle"
+                stroke-dasharray="30, 100"
+                stroke="rgba(255,255,0,1)"
+                fill="transparent"
+                stroke-width="3"
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              /> 
+        
+        <path class="circle"
+                
+                stroke="rgba(255,0,255,1)"
+                fill="transparent"
+                stroke-width="3"
+                d="
+                 M 18, 2.0845
+                 a 15.9155 15.9155 0 1 1 0 31.831
+                "
+              />
+        
+        
+        
+        <path fill="none" stroke="#eee" stroke-width="10"
+        d="M100,20 A80,80 0 1,1 94.97675843765487,20.15786172573827" />
+        
+        <path fill="none" stroke="red" stroke-width="10" title="testing" transform = "rotate(-45 100 100)"
+        d="M100,20 A80,80 0 0,1 176.0845213036123,124.7213595499958" />
+        
+        
+        <path fill="none" stroke="#3da08d" stroke-width="10"
+        d="M100,20 A80,80 0 0,1 140,30.717967697244916" />
+        
+        -->
+        
+          
+   <!--
+        <path stroke-width="1" stroke="#0C1013" fill="#2C3E50" data-order="0" 
+              d="M 225 10 A 215 215 0 0 1 421.8912861253715 311.36446866563296 L 372.6684645940286 289.77335149922476 A 161.25 161.25 0 0 0 225 63.75 Z"></path>
+       
+        <path stroke-width="1" stroke="#0C1013" fill="#FC4349" data-order="1" 
+              d="M 421.8912861253715 311.36446866563296 A 215 215 0 0 1 189.61224860039255 437.0676945007881 L 198.4591864502944 384.05077087559107 A 161.25 161.25 0 0 0 372.6684645940286 289.77335149922476 Z"></path>
+        
+        <path stroke-width="1" stroke="#0C1013" fill="#6DBCDB" data-order="2" 
+              d="M 189.61224860039255 437.0676945007881 
+              A 215 215 0 0 1 16.57897155364651 277.77949318972577 
+              L 68.68422866523488 264.5846198922943 
+              A 161.25 161.25 0 0 0 198.4591864502944 384.05077087559107 Z"></path>
+        
+        <path stroke-width="1" stroke="#0C1013" fill="#F7E248" data-order="3" 
+              d="M 16.57897155364651 277.77949318972577 
+              A 215 215 0 0 1 45.009131306958494 107.40626212623269 
+              L 90.00684848021888 136.8046965946745 
+              A 161.25 161.25 0 0 0 68.68422866523488 264.5846198922943 Z"></path>
+        
+        <path stroke-width="1" stroke="#0C1013" fill="#D7DADB" data-order="4" 
+              d="M 45.009131306958494 107.40626212623269 
+              A 215 215 0 0 1 155.1894665284709 21.649343703000284 
+              L 172.64209989635316 72.48700777725023 
+              A 161.25 161.25 0 0 0 90.00684848021888 136.8046965946745 Z"></path>
+        
+        <path stroke-width="1" stroke="#0C1013" fill="#FFF" data-order="5" 
+              d="M 155.1894665284709 21.649343703000284 
+              A 215 215 0 0 1 224.9998352830555 10.000000000063096 
+              L 224.9998764622916 63.75000000004732 
+              A 161.25 161.25 0 0 0 172.64209989635316 72.48700777725023 Z"></path>
+        
+        -->
+        
+        
+        
+        <rect fill="none" pointer-events="all" width="560" height="500"></rect>
+        <g></g>
+    </svg>
+            
+    <script>
+        
+        let doughnut = {
+                id: '#doughnut-chart',
+                radius: 100,
+                lastAngle: 0,
+                length: 2*Math.PI*100
+        }
+        
+        
+        
+        let data = [20,30,10,40, 100, 10]
+        
+        const PI = Math.PI
+        let H = 200, W = 200
+        centerX = W / 2,
+    centerY = H / 2,
+    
+    settings = {
+      edgeOffset: 5, //offset from edge of $this
+      percentageInnerCutout: 75,
+       }
+        
+  
+        
+         let doughnutRadius = Math.min(H / 2, W / 2) - settings.edgeOffset,
+        cutoutRadius = doughnutRadius * (settings.percentageInnerCutout / 100);
+
+        console.log(doughnutRadius)
+        let segmentTotal = data.reduce((a, b) => a + b)
+        
+       
+        
+        
+        let startRadius = -PI / 2; //-90 degree
+        
+        let $paths = []
+        let frag = document.createDocumentFragment()
+        let rotateAnimation = 1
+        for (var i = 0, len = data.length; i < len; i++) {
+            const cos = Math.cos,
+                  sin = Math.sin;
+          
+            let segmentAngle = (data[i] / segmentTotal * (PI * 2)),
+            endRadius = startRadius + segmentAngle,
+            largeArc = (endRadius - startRadius) % (PI * 2) > PI ? 1 : 0,
+            startX = centerX + cos(startRadius) * doughnutRadius,
+            startY = centerY + sin(startRadius) * doughnutRadius,
+            endX2 = centerX + cos(startRadius) * cutoutRadius,
+            endY2 = centerY + sin(startRadius) * cutoutRadius,
+            endX = centerX + cos(endRadius) * doughnutRadius,
+            endY = centerY + sin(endRadius) * doughnutRadius,
+            startX2 = centerX + cos(endRadius) * cutoutRadius,
+            startY2 = centerY + sin(endRadius) * cutoutRadius;
+            let cmd = [
+            'M', startX, startY, //Move pointer
+            'A', doughnutRadius, doughnutRadius, 0, largeArc, 1, endX, endY, //Draw outer arc path
+            'L', startX2, startY2, //Draw line path(this line connects outer and innner arc paths)
+            'A', cutoutRadius, cutoutRadius, 0, largeArc, 0, endX2, endY2, //Draw inner arc path
+            'Z' //Close path
+            ];
+            $paths[i] = cmd.join(' ');
+           
+            startRadius += segmentAngle;
+        
+            let path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+            path.setAttribute('stroke-width', '1')
+            path.setAttribute('stroke', '#fff')
+            path.setAttribute('fill', 'red')
+            path.setAttribute('d', $paths[i])
+            
+            frag.appendChild(path)
+      }
+      
+      
+      let g = document.querySelector('svg g')
+      
+      g.appendChild(frag)
+      
+      console.log($paths)
+        
+        /*
+        document.querySelectorAll('circle').forEach((elem)=>{
+            let value = elem.dataset.value
+            let length = doughnut.length*(value*.01);
+            elem.setAttribute('stroke-dasharray', length+' '+doughnut.length);
+            let angle = (360*length/doughnut.length);
+           // elem.setAttribute('transform', `rotate(${doughnut.lastAngle} 250 250)`);
+            doughnut.lastAngle += angle;
+        })*/
+        
+        
+        
+         document.querySelectorAll('path').forEach((elem)=>{
+             elem.addEventListener('click', (e)=>{
+                 console.log('clicked on', e.target.dataset.order)
+             })
+         })
+         
+         let scale = 1, x=0, y=0;
+         const MIN_SCALE = .25;
+         const MAX_SCALE = 5;
+         document.querySelector('rect').addEventListener('wheel', (e)=>{
+             e.preventDefault();
+             //console.log(e)
+             
+             //zoomIntensity = 0.2;
+             //wheel = event.wheelDelta/120;
+             nextScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale - e.wheelDelta / 100));
+             scale = nextScale
+             g.setAttribute("transform", `translate(${x}, ${y}) scale(${scale})`);
+             
+         })
+         
+         
+         document.querySelector('rect').addEventListener('mousemove', (e)=>{
+             e.preventDefault();
+             //console.log(e)
+             
+             
+             
+             let direction = (e.pageX < x) ? -1 : 1
+
+    
+             var ClientRect = e.target.getBoundingClientRect();
+              x += Math.round(e.clientX * direction) ,
+                  y += Math.round(e.clientY * direction)
+                  
+                  
+                  g.setAttribute("transform", `translate(${x}, ${y}) scale(${scale})`);
+                                   
+                
+         })
+         
+         // 
+         //xNew
+         
+         
+        
+        
+    /*(doughnut.id+' circle').attr('r', 100);
+        $(doughnut.id).find('circle').each(function() {
+                var value = $(this).data('value');
+                var length = doughnut.length*value;
+                $(this).attr('stroke-dasharray', length+' '+doughnut.length);
+                var angle = 360*length/doughnut.length;
+                $(this).attr('transform', 'rotate('+doughnut.lastAngle+' 250 250)');
+                
+        });*/
+        /*
+        let canvasSize = 200
+        let centre = canvasSize/2,
+            radius = canvasSize*0.8/2,   
+            startY = centre-radius,
+    
+            d = 30,
+            dr = d-90;
+            radians = Math.PI*(dr)/180,
+            endx = centre + radius*Math.cos(radians),
+            endy = centre + radius * Math.sin(radians),
+            largeArc = d>180 ? 1 : 0;  
+            path = "M"+centre+","+startY+" A"+radius+","+radius+" 0 "+largeArc+",1 "+endx+","+endy;
+            
+            console.log(path)*/
+        
+    </script>
+
+    </body>
+</html>
