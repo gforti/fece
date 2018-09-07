@@ -15,7 +15,7 @@ and open the template in the editor.
                 background-color: green;
             }
             
-            svg-h {
+            div {
                 width: 200px;
     height: 200px;
             }
@@ -25,26 +25,29 @@ and open the template in the editor.
     </head>
     <body>
         
-        <!--
-        <div>
-            
-            <svg class="circle-chart" viewbox="0 0 180 180" width="180" height="180" >
-            <circle class="circle-chart__background" stroke="#efefef" stroke-width="10" fill="none" cx="90" cy="90" r="85" />
-            <circle class="circle-chart__circle" stroke="#00acc1" stroke-width="10" stroke-dasharray="134,534" stroke-linecap="round" fill="none" cx="90" cy="90" r="85" />
-          </svg>
-            
+        <div>      
+            <svg viewbox="0 0 200 200"  id="doughnut-chart" xmlns="http://www.w3.org/2000/svg">
+                <rect fill="none" pointer-events="all" width="560" height="500"></rect>
+                <g>
+                    <defs>
+                    <filter x="0" y="0" width="1.3" height="1.3" id="solid">
+                        <feOffset in="SourceGraphic" dx="1" dy="1" />
+                      <feFlood flood-color="#000" flood-opacity="0.5" />
+                      
+                      <feComposite in="SourceGraphic" />
+                    </filter>
+                  </defs>
+                    <text filter="url(#solid)" x = "10" y = "25" fill="#efe" font-size="24" style="text-anchor: middle;alignment-baseline:middle">                    
+                        It was the best of times                    
+                    </text>
+                </g>
+                
+            </svg>
         </div>
-        
-        
-        
-        <svg xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="40" stroke="black" stroke-width="10" fill="red" stroke-dasharray="1000" />
-      </svg>
-
-      -->
-      
-      <svg viewbox="0 0 200 200"  id="doughnut-chart">
-	 <!--  <circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(0,255,0,1)" data-value="2"/>
+            
+    
+    
+    <!--  <circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(0,255,0,1)" data-value="2"/>
        <circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(255,0,0,1)" data-value="90"/>
 	<circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(0,0,255,1)" data-value="2"/>
 	<circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(0,0,0,1)" data-value="6"/> -->
@@ -125,13 +128,25 @@ and open the template in the editor.
               A 161.25 161.25 0 0 0 172.64209989635316 72.48700777725023 Z"></path>
         
         -->
-        
-        
-        
-        <rect fill="none" pointer-events="all" width="560" height="500"></rect>
-        <g></g>
-    </svg>
+    <!--
+        <div>
             
+            <svg class="circle-chart" viewbox="0 0 180 180" width="180" height="180" >
+            <circle class="circle-chart__background" stroke="#efefef" stroke-width="10" fill="none" cx="90" cy="90" r="85" />
+            <circle class="circle-chart__circle" stroke="#00acc1" stroke-width="10" stroke-dasharray="134,534" stroke-linecap="round" fill="none" cx="90" cy="90" r="85" />
+          </svg>
+            
+        </div>
+        
+        
+        
+        <svg >
+        <circle cx="50" cy="50" r="40" stroke="black" stroke-width="10" fill="red" stroke-dasharray="1000" />
+      </svg>
+
+      -->
+      
+      
     <script>
         
         let doughnut = {
@@ -202,17 +217,23 @@ and open the template in the editor.
             path.setAttribute('stroke', '#fff')
             path.setAttribute('fill', 'red')
             path.setAttribute('d', $paths[i])
-            
+            path.dataset.value = data[i]
             frag.appendChild(path)
       }
       
       
       let g = document.querySelector('svg g')
       
-      g.appendChild(frag)
+      g.insertBefore(frag, g.firstChild)
+      g.style.backfaceVisibility = `hidden`;
+            g.style.transformStyle  = `preserve-3d`;
       
       console.log($paths)
         
+        let scale = 1, x=0, y=0;
+         const MIN_SCALE = 1;
+         const MAX_SCALE = 5;
+         
         /*
         document.querySelectorAll('circle').forEach((elem)=>{
             let value = elem.dataset.value
@@ -226,14 +247,22 @@ and open the template in the editor.
         
         
          document.querySelectorAll('path').forEach((elem)=>{
-             elem.addEventListener('click', (e)=>{
-                 console.log('clicked on', e.target.dataset.order)
+             elem.addEventListener('mousemove', (e)=>{
+                 // console.log('clicked on', e.target.dataset.order)
+                 document.querySelector('svg text').setAttribute('x', e.clientX + (10 * scale)) 
+                 document.querySelector('svg text').setAttribute('y', e.clientY + (10*scale)) 
+                 document.querySelector('svg text').textContent = `${e.target.dataset.value}`
+                 
+             })
+             
+             elem.addEventListener('mouseout', (e)=>{
+                 
+                 document.querySelector('svg text').textContent = ''
+                 
              })
          })
          
-         let scale = 1, x=0, y=0;
-         const MIN_SCALE = .25;
-         const MAX_SCALE = 5;
+         
          document.querySelector('rect').addEventListener('wheel', (e)=>{
              e.preventDefault();
              //console.log(e)
@@ -246,24 +275,35 @@ and open the template in the editor.
              
          })
          
-         
+         let dragging = false
          document.querySelector('rect').addEventListener('mousemove', (e)=>{
              e.preventDefault();
+             
+             
+             
+             if (!dragging) return
              //console.log(e)
-             
-             
-             
-             let direction = (e.pageX < x) ? -1 : 1
+             let direction = (e.clientX < x) ? -1 : 1
 
     
              var ClientRect = e.target.getBoundingClientRect();
-              x += Math.round(e.clientX * direction) ,
-                  y += Math.round(e.clientY * direction)
+              x += e.clientX * direction
+                 //y += Math.round(e.clientY * direction)
                   
                   
                   g.setAttribute("transform", `translate(${x}, ${y}) scale(${scale})`);
                                    
                 
+         })
+         
+         document.querySelector('rect').addEventListener('mousedown', (e)=>{
+             dragging = true
+             e.target.style.cursor = 'grabbing'
+         })
+         
+         document.querySelector('rect').addEventListener('mouseup', (e)=>{
+             dragging = false
+             e.target.style.cursor = 'default'
          })
          
          // 
