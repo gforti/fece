@@ -35,8 +35,15 @@ and open the template in the editor.
                 <g>
                     
                 </g>
-                
-                
+                <!--
+                <defs>
+                <path id="p1" d="M250 50 A200,200,0,0,1,423.2050807568877,149.99999999999997" fill="#ddd" stroke="#ddd"></path>
+              </defs>
+              <text style="font-size: 24px;">
+                <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
+              </text>
+              -->
+              
                     <defs>
                     <!-- <filter x="0" y="0" width="1" height="1" id="solid"> -->
                      <filter id="goo" >
@@ -46,7 +53,7 @@ and open the template in the editor.
                         <!--<feBlend in="SourceGraphic" in2="flood" mode="multiply"></feBlend> --->
                     </filter>
                   </defs>
-                    <text filter="url(#goo)" x="0" y="0" dx="-10" dy="-20" fill="#efe" font-size="24" text-anchor="middle" alignment-baseline="middle">                    
+                    <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="-10" dy="-20" fill="#efe" font-size="24" text-anchor="middle" alignment-baseline="middle">                    
                         It was the best of times                    
                     </text>   
                 
@@ -176,7 +183,7 @@ and open the template in the editor.
     
     settings = {
       edgeOffset: 5, //offset from edge of $this
-      percentageInnerCutout: 75,
+      percentageInnerCutout: 55,
        }
         
   
@@ -193,9 +200,11 @@ and open the template in the editor.
         let startRadius = -PI / 2; //-90 degree
         
         let $paths = []
+        let textPaths = []
+        let textXY = []
         let frag = document.createDocumentFragment()
         let rotateAnimation = 1
-        for (var i = 0, len = data.length; i < len; i++) {
+        for (let i = 0, len = data.length; i < len; i++) {
             const cos = Math.cos,
                   sin = Math.sin;
           
@@ -217,7 +226,13 @@ and open the template in the editor.
             'A', cutoutRadius, cutoutRadius, 0, largeArc, 0, endX2, endY2, //Draw inner arc path
             'Z' //Close path
             ];
-            $paths[i] = cmd.join(' ');
+            let cmd2 = [
+                'M', startX, startY, //Move pointer
+                'A', cutoutRadius, cutoutRadius, 0, largeArc, 0, endX2, endY2
+            ];
+            textXY.push({startX: `${startX-doughnutRadius }`, startY: `${(centerY- sin(startRadius))}`})
+            textPaths[i] = cmd2.join(' ');
+            $paths[i] = cmd.join(' '); 
            
             startRadius += segmentAngle;
         
@@ -226,8 +241,46 @@ and open the template in the editor.
             path.setAttribute('stroke', '#fff')
             path.setAttribute('fill', 'red')
             path.setAttribute('d', $paths[i])
+            
             path.dataset.value = data[i]
             frag.appendChild(path)
+            
+        }
+        for (let i = 0, len = data.length; i < len; i++) {
+            /*<defs>
+                <path id="p1" d="M250 50 A200,200,0,0,1,423.2050807568877,149.99999999999997" fill="#ddd" stroke="#ddd"></path>
+              </defs>
+              <text style="font-size: 24px;">
+                <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
+              </text>
+            */
+            let defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
+            let pathClone = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+                pathClone.setAttribute('d', textPaths[i])
+                pathClone.setAttribute('id', `p${i}`)
+               // pathClone.setAttribute('stroke', '#ddd')
+               // pathClone.setAttribute('fill', '#ddd')
+            defs.appendChild(pathClone)
+            
+            let textPath = document.createElementNS('http://www.w3.org/2000/svg', 'textPath')
+             textPath.setAttribute('href', `#p${i}`)
+            // textPath.setAttribute('text-anchor', `middle`)
+             textPath.setAttribute('startOffset', `80%`)
+            //textPath.setAttribute('side', `left`)
+            textPath.setAttribute('path', textPaths[i])
+            textPath.textContent = data[i]
+            
+            let textStyle = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+            textStyle.setAttribute('style', `font-size: 24px;`)
+            textStyle.setAttribute('x', `${textXY[i].startX}`)
+            textStyle.setAttribute('y', `${textXY[i].startY}`)
+            textStyle.textContent = data[i]
+            // textStyle.appendChild(textPath)
+             // <text style="font-size: 24px;">
+            // <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
+            
+            frag.appendChild(defs)
+            frag.appendChild(textStyle)
       }
       
       
@@ -258,9 +311,9 @@ and open the template in the editor.
          document.querySelectorAll('path').forEach((elem)=>{
              elem.addEventListener('mousemove', (e)=>{
                  // console.log('clicked on', e.target.dataset.order)
-                 document.querySelector('svg text').setAttribute('x', e.clientX ) 
-                 document.querySelector('svg text').setAttribute('y', e.clientY ) 
-                 document.querySelector('svg text').textContent = `${e.target.dataset.value}`
+                 document.querySelector('svg #infoinfo').setAttribute('x', e.clientX ) 
+                 document.querySelector('svg #infoinfo').setAttribute('y', e.clientY ) 
+                 document.querySelector('svg #infoinfo').textContent = `${e.target.dataset.value}`
                  
              })
              
