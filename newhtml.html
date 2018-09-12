@@ -16,8 +16,8 @@ and open the template in the editor.
             }
             
             div {
-                width: 200px;
-    height: 200px;
+                width: 400px;
+    height: 400px;
             }
             
        
@@ -174,7 +174,7 @@ and open the template in the editor.
         
         
         
-        let data = [20,30,10,40, 100, 10]
+        let data = [20,30,10,40, 100]
         
         const PI = Math.PI
         let H = 200, W = 200
@@ -210,6 +210,7 @@ and open the template in the editor.
           
             let segmentAngle = (data[i] / segmentTotal * (PI * 2)),
             endRadius = startRadius + segmentAngle,
+            halfRadius = startRadius + (segmentAngle/2)
             largeArc = (endRadius - startRadius) % (PI * 2) > PI ? 1 : 0,
             startX = centerX + cos(startRadius) * doughnutRadius,
             startY = centerY + sin(startRadius) * doughnutRadius,
@@ -217,8 +218,21 @@ and open the template in the editor.
             endY2 = centerY + sin(startRadius) * cutoutRadius,
             endX = centerX + cos(endRadius) * doughnutRadius,
             endY = centerY + sin(endRadius) * doughnutRadius,
+            
+            endXH = centerX + cos(halfRadius) * cutoutRadius,
+            endYH = centerY + sin(halfRadius) * cutoutRadius,
+            
+            startXD = centerX + cos(halfRadius) * doughnutRadius,
+            startYD = centerY + sin(halfRadius) * doughnutRadius,
+            startXC = centerX + cos(halfRadius) * cutoutRadius,
+            startYC = centerY + sin(halfRadius) * cutoutRadius,
+            
             startX2 = centerX + cos(endRadius) * cutoutRadius,
             startY2 = centerY + sin(endRadius) * cutoutRadius;
+    
+    
+    
+    console.log('startYD', startYD, startYC)
             let cmd = [
             'M', startX, startY, //Move pointer
             'A', doughnutRadius, doughnutRadius, 0, largeArc, 1, endX, endY, //Draw outer arc path
@@ -227,10 +241,10 @@ and open the template in the editor.
             'Z' //Close path
             ];
             let cmd2 = [
-                'M', startX, startY, //Move pointer
-                'A', cutoutRadius, cutoutRadius, 0, largeArc, 0, endX2, endY2
+                'M', Math.min(startXC,startXD), startYC, //Move pointer
+                'L', Math.max(startXC,startXD), startYC
             ];
-            textXY.push({startX: `${startX-doughnutRadius }`, startY: `${(centerY- sin(startRadius))}`})
+            textXY.push({startX: `${startXD}`, startY: `${startYD}`})
             textPaths[i] = cmd2.join(' ');
             $paths[i] = cmd.join(' '); 
            
@@ -256,7 +270,7 @@ and open the template in the editor.
             */
             let defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
             let pathClone = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-                pathClone.setAttribute('d', textPaths[i])
+               pathClone.setAttribute('d', textPaths[i])
                 pathClone.setAttribute('id', `p${i}`)
                // pathClone.setAttribute('stroke', '#ddd')
                // pathClone.setAttribute('fill', '#ddd')
@@ -264,22 +278,23 @@ and open the template in the editor.
             
             let textPath = document.createElementNS('http://www.w3.org/2000/svg', 'textPath')
              textPath.setAttribute('href', `#p${i}`)
-            // textPath.setAttribute('text-anchor', `middle`)
-             textPath.setAttribute('startOffset', `80%`)
+              // textPath.setAttribute('text-anchor', `start`)
+             // textPath.setAttribute('startOffset', `0%`)
             //textPath.setAttribute('side', `left`)
-            textPath.setAttribute('path', textPaths[i])
+            // textPath.setAttribute('path', textPaths[i])
             textPath.textContent = data[i]
             
             let textStyle = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-            textStyle.setAttribute('style', `font-size: 24px;`)
-            textStyle.setAttribute('x', `${textXY[i].startX}`)
-            textStyle.setAttribute('y', `${textXY[i].startY}`)
-            textStyle.textContent = data[i]
-            // textStyle.appendChild(textPath)
+            // textStyle.setAttribute('style', `font-size: 24px;`)
+            // textStyle.setAttribute('x', `${textXY[i].startX}`)
+            // textStyle.setAttribute('y', `${textXY[i].startY}`)
+            // textStyle.textContent = data[i]
+           // 
+              textStyle.appendChild(textPath)
              // <text style="font-size: 24px;">
             // <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
             
-            frag.appendChild(defs)
+             frag.appendChild(defs)
             frag.appendChild(textStyle)
       }
       
@@ -287,8 +302,8 @@ and open the template in the editor.
       let g = document.querySelector('svg g')
       
       g.insertBefore(frag, g.firstChild)
-      g.style.backfaceVisibility = `hidden`;
-            g.style.transformStyle  = `preserve-3d`;
+      // g.style.backfaceVisibility = `hidden`;
+       //      g.style.transformStyle  = `preserve-3d`;
       
       console.log($paths)
         
@@ -319,7 +334,7 @@ and open the template in the editor.
              
              elem.addEventListener('mouseout', (e)=>{
                  
-                 document.querySelector('svg text').textContent = ''
+                 document.querySelector('svg #infoinfo').textContent = ''
                  
              })
          })
