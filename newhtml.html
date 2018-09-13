@@ -12,7 +12,7 @@ and open the template in the editor.
         <style>
             
             body {
-                background-color: green;
+                background-color: black;
             }
             
             div {
@@ -20,6 +20,27 @@ and open the template in the editor.
     height: 400px;
             }
             
+            
+            .chart-number {
+  font-size: 0.6em;
+  line-height: 1;
+  text-anchor: middle;
+  -moz-transform: translateY(-0.25em);
+  -ms-transform: translateY(-0.25em);
+  -webkit-transform: translateY(-0.25em);
+  transform: translateY(-0.25em);
+}
+
+.chart-label {
+  font-size: 0.2em;
+  text-transform: uppercase;
+  text-anchor: middle;
+  -moz-transform: translateY(0.7em);
+  -ms-transform: translateY(0.7em);
+  -webkit-transform: translateY(0.7em);
+  transform: translateY(0.7em);
+}
+           
        
         </style>
     </head>
@@ -32,9 +53,16 @@ and open the template in the editor.
                 
                 <rect fill="none" pointer-events="all" width="500" height="500"></rect>
                 
-                <g>
-                    
-                <text alignment-baseline="middle" text-anchor="middle" x="50%" y="50%" >50%</text>
+                <g>                
+                
+                    <g class="chart-text">
+                    <text x="50%" y="40%" fill="white" class="chart-number" text-anchor="middle" alignment-baseline="middle">
+                      All Briaders
+                    </text>
+                    <text x="50%" y="50%" fill="white" class="chart-label" text-anchor="middle" alignment-baseline="middle">
+                      Briader Status Live
+                    </text>
+                  </g>
                 </g>
                 <!--
                 <defs>
@@ -44,6 +72,8 @@ and open the template in the editor.
                 <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
               </text>
               -->
+              
+              
               
                     <defs>
                     <!-- <filter x="0" y="0" width="1" height="1" id="solid"> -->
@@ -189,13 +219,13 @@ and open the template in the editor.
         let colors = ['red', 'green', 'blue', 'orange', 'brown', 'grey', 'yellow', 'grey']
         
         const PI = Math.PI
-        let H = 200, W = 200
+        let H = 250, W = 250
         centerX = W / 2,
     centerY = H / 2,
     
     settings = {
-      edgeOffset: 5, //offset from edge of $this
-      percentageInnerCutout: 55,
+      edgeOffset: 10, //offset from edge of $this
+      percentageInnerCutout: 75,
        }
         
   
@@ -234,9 +264,16 @@ and open the template in the editor.
             endXH = centerX + cos(halfRadius) * cutoutRadius,
             endYH = centerY + sin(halfRadius) * cutoutRadius,
             
-            dRad = doughnutRadius * ((settings.percentageInnerCutout+ (settings.percentageInnerCutout/2) ) / 100),
-            startXD = centerX + cos(halfRadius) * dRad - settings.edgeOffset,
-            startYD = centerY + sin(halfRadius) * dRad + settings.edgeOffset,
+            console.log(((settings.percentageInnerCutout+ (settings.percentageInnerCutout/2) ) / 100))
+            console.log((settings.edgeOffset*.01));
+            
+            console.log('cutoutRadius', cutoutRadius)
+            console.log('cutoutRadius', cutoutRadius + ((doughnutRadius-cutoutRadius)/2))
+            console.log(doughnutRadius)
+            
+            dRad = cutoutRadius + ((doughnutRadius-cutoutRadius)/2),
+            startXD = centerX + cos(halfRadius) * dRad,
+            startYD = centerY + sin(halfRadius) * dRad,
             
             startXC = centerX + cos(halfRadius) * cutoutRadius,
             startYC = centerY + sin(halfRadius) * cutoutRadius,
@@ -265,7 +302,7 @@ and open the template in the editor.
             startRadius += segmentAngle;
         
             let path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-            path.setAttribute('stroke-width', '1')
+            path.setAttribute('stroke-width', '2')
             path.setAttribute('stroke', '#fff')
             path.setAttribute('fill', colors[i])
             path.setAttribute('d', $paths[i])
@@ -303,6 +340,9 @@ and open the template in the editor.
             // textStyle.setAttribute('style', `font-size: 24px;`)
            textStyle.setAttribute('x', `${textXY[i].startX}`)
              textStyle.setAttribute('y', `${textXY[i].startY}`)
+             textStyle.setAttribute('text-anchor', `middle`)
+             textStyle.setAttribute('alignment-baseline', `middle`)
+             //text-anchor="middle" alignment-baseline="middle"
              textStyle.textContent = data[i]
              textStyle.classList.add('hov')
              textStyle.dataset.value = data[i]
