@@ -53,7 +53,7 @@ and open the template in the editor.
                         <!--<feBlend in="SourceGraphic" in2="flood" mode="multiply"></feBlend> --->
                     </filter>
                   </defs>
-                    <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="-10" dy="-20" fill="#efe" font-size="24" text-anchor="middle" alignment-baseline="middle">                    
+                    <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="-10" dy="-20" fill="#efe" font-size="14" text-anchor="middle" alignment-baseline="middle">                    
                         It was the best of times                    
                     </text>   
                 
@@ -267,6 +267,7 @@ and open the template in the editor.
             path.setAttribute('stroke', '#fff')
             path.setAttribute('fill', 'red')
             path.setAttribute('d', $paths[i])
+            path.classList.add('hov')
             
             path.dataset.value = data[i]
             frag.appendChild(path)
@@ -301,6 +302,9 @@ and open the template in the editor.
            textStyle.setAttribute('x', `${textXY[i].startX}`)
              textStyle.setAttribute('y', `${textXY[i].startY}`)
              textStyle.textContent = data[i]
+             textStyle.classList.add('hov')
+             textStyle.dataset.value = data[i]
+             textStyle.style.cursor = 'default'
            // 
               // textStyle.appendChild(textPath)
              // <text style="font-size: 24px;">
@@ -335,7 +339,7 @@ and open the template in the editor.
         
         
         
-         document.querySelectorAll('path').forEach((elem)=>{
+         document.querySelectorAll('.hov').forEach((elem)=>{
              elem.addEventListener('mousemove', (e)=>{
                   // console.log('clicked on', e)
                   
