@@ -34,6 +34,7 @@ and open the template in the editor.
                 
                 <g>
                     
+                <text alignment-baseline="middle" text-anchor="middle" x="50%" y="50%" >50%</text>
                 </g>
                 <!--
                 <defs>
@@ -47,7 +48,7 @@ and open the template in the editor.
                     <defs>
                     <!-- <filter x="0" y="0" width="1" height="1" id="solid"> -->
                      <filter id="goo" >
-                         <feFlood flood-color="#000" flood-opacity="0.5" result="flood" />
+                         <feFlood flood-color="#000" flood-opacity="0.7" result="flood" />
                       
                          <feComposite in="SourceGraphic" />
                         <!--<feBlend in="SourceGraphic" in2="flood" mode="multiply"></feBlend> --->
@@ -184,7 +185,8 @@ and open the template in the editor.
         
         
         
-        let data = [20,30,10,40, 99, 1, 50]
+        let data = [20,30,10,40, 99, 11, 50]
+        let colors = ['red', 'green', 'blue', 'orange', 'brown', 'grey', 'yellow', 'grey']
         
         const PI = Math.PI
         let H = 200, W = 200
@@ -244,7 +246,7 @@ and open the template in the editor.
     
     
     
-    console.log('startYD', startYD, startYC)
+    // console.log('startYD', startYD, startYC)
             let cmd = [
             'M', startX, startY, //Move pointer
             'A', doughnutRadius, doughnutRadius, 0, largeArc, 1, endX, endY, //Draw outer arc path
@@ -265,7 +267,7 @@ and open the template in the editor.
             let path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
             path.setAttribute('stroke-width', '1')
             path.setAttribute('stroke', '#fff')
-            path.setAttribute('fill', 'red')
+            path.setAttribute('fill', colors[i])
             path.setAttribute('d', $paths[i])
             path.classList.add('hov')
             
