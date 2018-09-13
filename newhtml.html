@@ -174,7 +174,7 @@ and open the template in the editor.
         
         
         
-        let data = [20,30,10,40, 100]
+        let data = [20,30,10,40, 99, 1, 50]
         
         const PI = Math.PI
         let H = 200, W = 200
@@ -222,8 +222,10 @@ and open the template in the editor.
             endXH = centerX + cos(halfRadius) * cutoutRadius,
             endYH = centerY + sin(halfRadius) * cutoutRadius,
             
-            startXD = centerX + cos(halfRadius) * doughnutRadius,
-            startYD = centerY + sin(halfRadius) * doughnutRadius,
+            dRad = doughnutRadius * ((settings.percentageInnerCutout+ (settings.percentageInnerCutout/2) ) / 100),
+            startXD = centerX + cos(halfRadius) * dRad - settings.edgeOffset,
+            startYD = centerY + sin(halfRadius) * dRad + settings.edgeOffset,
+            
             startXC = centerX + cos(halfRadius) * cutoutRadius,
             startYC = centerY + sin(halfRadius) * cutoutRadius,
             
@@ -286,11 +288,11 @@ and open the template in the editor.
             
             let textStyle = document.createElementNS('http://www.w3.org/2000/svg', 'text')
             // textStyle.setAttribute('style', `font-size: 24px;`)
-            // textStyle.setAttribute('x', `${textXY[i].startX}`)
-            // textStyle.setAttribute('y', `${textXY[i].startY}`)
-            // textStyle.textContent = data[i]
+           textStyle.setAttribute('x', `${textXY[i].startX}`)
+             textStyle.setAttribute('y', `${textXY[i].startY}`)
+             textStyle.textContent = data[i]
            // 
-              textStyle.appendChild(textPath)
+              // textStyle.appendChild(textPath)
              // <text style="font-size: 24px;">
             // <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
             
@@ -325,9 +327,9 @@ and open the template in the editor.
         
          document.querySelectorAll('path').forEach((elem)=>{
              elem.addEventListener('mousemove', (e)=>{
-                 // console.log('clicked on', e.target.dataset.order)
-                 document.querySelector('svg #infoinfo').setAttribute('x', e.clientX ) 
-                 document.querySelector('svg #infoinfo').setAttribute('y', e.clientY ) 
+                  // console.log('clicked on', e)
+                 document.querySelector('svg #infoinfo').setAttribute('x', e.offsetX ) 
+                 document.querySelector('svg #infoinfo').setAttribute('y', e.offsetY ) 
                  document.querySelector('svg #infoinfo').textContent = `${e.target.dataset.value}`
                  
              })
