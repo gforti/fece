@@ -15,9 +15,10 @@ and open the template in the editor.
                 background-color: black;
             }
             
-            div {
+            div.box {
                 width: 400px;
     height: 400px;
+    position: relative;
             }
             
             
@@ -29,30 +30,34 @@ and open the template in the editor.
               text-transform: uppercase;
               text-anchor: middle;
             }
+            
+            .chartSummary {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                color: #d5d5d5;
+                text-align: center;
+                text-shadow: 0 -1px 0 #fff;
+                cursor: default;
+            }
            
        
         </style>
     </head>
     <body>
         
-        <div>      
+        <div class="box">   
+            <div class='chartSummary'>
+                <span>All Briaders</span>
+                Briader Status Live
+            </div>
             <svg viewbox="0 0 250 250"  id="doughnut-chart" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
                 <!-- <defs><clipPath id="clip"><rect width="100%" height="100%"></rect></clipPath></defs>
                 clip-path="url(#clip)" -->
                 
                 <rect fill="none" pointer-events="all" width="500" height="500"></rect>
                 
-                <g>                
-                
-                    <g class="chart-text">
-                    <text x="50%" y="40%" fill="white" class="chart-number" text-anchor="middle" alignment-baseline="middle">
-                      All Briaders
-                    </text>
-                    <text x="50%" y="50%" fill="white" class="chart-label" text-anchor="middle" alignment-baseline="middle">
-                      Briader Status Live
-                    </text>
-                  </g>
-                </g>
+                <g> </g>
                 <!--
                 <defs>
                 <path id="p1" d="M250 50 A200,200,0,0,1,423.2050807568877,149.99999999999997" fill="#ddd" stroke="#ddd"></path>
@@ -79,9 +84,12 @@ and open the template in the editor.
                 
                 
             </svg>
-        </div>
             
-    
+        </div>
+        
+        
+        
+        
     
     <!--  <circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(0,255,0,1)" data-value="2"/>
        <circle cx="250" cy="250" r="100" fill="transparent" stroke-width="30" stroke="rgba(255,0,0,1)" data-value="90"/>
@@ -214,7 +222,7 @@ and open the template in the editor.
     
     settings = {
       edgeOffset: 10, //offset from edge of $this
-      percentageInnerCutout: 75,
+      percentageInnerCutout: 65,
        }
         
   
@@ -270,6 +278,19 @@ and open the template in the editor.
             startX2 = centerX + cos(endRadius) * cutoutRadius,
             startY2 = centerY + sin(endRadius) * cutoutRadius;
     
+    
+            let summarySize = (doughnutRadius - (doughnutRadius - cutoutRadius)) * 2,
+                sum = document.querySelector('.chartSummary'),
+                sumHeader = document.querySelector('.chartSummary span')
+            sum.style.color = `white`
+            sum.style.width = `${summarySize + (summarySize/2)}px`
+            //sum.style.height = `${summarySize}px`
+            sum.style.marginLeft = `${-(summarySize / 2 + (summarySize/4))}px`
+            sum.style.marginTop = `${-(summarySize / 2 - (summarySize/4))}px`
+            sum.style.fontSize = `${summarySize * .013}rem`
+            sumHeader.style.fontSize = `${summarySize * .017}rem`
+            console.log(summarySize)
+           
     
     
     // console.log('startYD', startYD, startYC)
