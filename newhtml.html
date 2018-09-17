@@ -16,8 +16,8 @@ and open the template in the editor.
             }
             
             div.box {
-                width: 400px;
-    height: 400px;
+                width: 300px;
+    height: 300px;
     position: relative;
             }
             
@@ -39,6 +39,7 @@ and open the template in the editor.
                 text-align: center;
                 text-shadow: 0 -1px 0 #fff;
                 cursor: default;
+                font-size: 100vw;
             }
            
        
@@ -213,7 +214,7 @@ and open the template in the editor.
         
         
         let data = [20,30,10,40, 99, 11, 50]
-        let colors = ['red', 'green', 'blue', 'orange', 'brown', 'grey', 'yellow', 'grey']
+        let colors = ['red', 'green', 'blue', 'orange', 'brown', 'grey', 'gold', 'grey']
         
         const PI = Math.PI
         let H = 250, W = 250
@@ -222,7 +223,7 @@ and open the template in the editor.
     
     settings = {
       edgeOffset: 10, //offset from edge of $this
-      percentageInnerCutout: 65,
+      percentageInnerCutout: 75,
        }
         
   
@@ -243,6 +244,7 @@ and open the template in the editor.
         let textXY = []
         let frag = document.createDocumentFragment()
         let rotateAnimation = 1
+        let fontSize = 1
         for (let i = 0, len = data.length; i < len; i++) {
             const cos = Math.cos,
                   sin = Math.sin;
@@ -279,7 +281,7 @@ and open the template in the editor.
             startY2 = centerY + sin(endRadius) * cutoutRadius;
     
     
-            let summarySize = (doughnutRadius - (doughnutRadius - cutoutRadius)) * 2,
+            let summarySize = (doughnutRadius - (doughnutRadius - cutoutRadius)),
                 sum = document.querySelector('.chartSummary'),
                 sumHeader = document.querySelector('.chartSummary span')
             sum.style.color = `white`
@@ -287,8 +289,9 @@ and open the template in the editor.
             //sum.style.height = `${summarySize}px`
             sum.style.marginLeft = `${-(summarySize / 2 + (summarySize/4))}px`
             sum.style.marginTop = `${-(summarySize / 2 - (summarySize/4))}px`
-            sum.style.fontSize = `${summarySize * .013}rem`
-            sumHeader.style.fontSize = `${summarySize * .017}rem`
+            sum.style.fontSize = `${summarySize * .013}vw`
+            sumHeader.style.fontSize = `${summarySize * .017}vw`
+            fontSize = (summarySize) * .01
             console.log(summarySize)
            
     
@@ -347,16 +350,17 @@ and open the template in the editor.
             textPath.textContent = data[i]
             
             let textStyle = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-            // textStyle.setAttribute('style', `font-size: 24px;`)
+             textStyle.setAttribute('fill', `#fff`)
            textStyle.setAttribute('x', `${textXY[i].startX}`)
              textStyle.setAttribute('y', `${textXY[i].startY}`)
              textStyle.setAttribute('text-anchor', `middle`)
              textStyle.setAttribute('alignment-baseline', `middle`)
              //text-anchor="middle" alignment-baseline="middle"
-             textStyle.textContent = data[i]
+             textStyle.textContent = `${data[i]}%`
              textStyle.classList.add('hov')
              textStyle.dataset.value = data[i]
              textStyle.style.cursor = 'default'
+             textStyle.style.fontSize = `${fontSize}rem`
            // 
               // textStyle.appendChild(textPath)
              // <text style="font-size: 24px;">
