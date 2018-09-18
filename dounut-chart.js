@@ -6,6 +6,7 @@ function generateTemplate() {
         <style>
             div.box {
                 position: relative;
+                
             }
             .chart-number {
                 text-anchor: middle;
@@ -23,6 +24,7 @@ function generateTemplate() {
                 text-align: center;
                 text-shadow: 0 -1px 0 #fff;
                 cursor: default;
+                z-index: 0;
             }
             .chartSummary span {
                 display: block;
@@ -198,21 +200,28 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
         }
         
         
-        let summarySize = (cutoutRadius + doughnutRadius ) * percentageInnerCutout/10 ,
+        let summarySize = (doughnutRadius - (doughnutRadius - cutoutRadius)),
+            fontSizeCenter = ( centerX - cutoutRadius ),
                 sum = this.sum,
                 sumHeader = this.sumHeader
             sum.style.color = `white`
-            sum.style.width = `${(summarySize) }%`
+            sum.style.width = `${summarySize*3}px`
             //sum.style.height = `${summarySize}px`
-            //sum.style.marginLeft = `${100 - summarySize  }px`
-            //sum.style.marginTop = `${-(summarySize / 2 - (summarySize/4))}px`
-           // sum.style.fontSize = `${summarySize * .013}vw`
-           fontSize = (summarySize) * .01;
-            sum.style.fontSize = `${fontSize}rem`
-            sumHeader.style.fontSize = `${fontSize}rem`
+            sum.style.marginLeft = `${-(summarySize + (summarySize/2))}px`
+            sum.style.marginTop = `${-(summarySize - (summarySize/4))}px`
             
+           // sum.style.fontSize = `${summarySize * .013}vw`
+           fontSize = (doughnutRadius - cutoutRadius/2) * .01;
+            sum.style.fontSize = `${summarySize *.03 }rem`
+            sumHeader.style.fontSize = `${summarySize *.03 }rem`
+            
+            console.log('percentageInnerCutout', percentageInnerCutout)
+            console.log('doughnutRadius', doughnutRadius)
+            console.log('cutoutRadius', cutoutRadius)
+            console.log('doughnutRadius - cutoutRadius', doughnutRadius - cutoutRadius)
             console.log('summarySize', summarySize)
-            console.log('fontSize', fontSize)
+            console.log('fontSizeCenter', fontSizeCenter)
+            console.log('----------------------')
         
         
         
