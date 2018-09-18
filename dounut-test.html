@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            div {
+                width: 30vw;
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <div>
+            <dounut-chart percentageInnerCutout="25"></dounut-chart>
+            <dounut-chart percentageInnerCutout="65"></dounut-chart>
+            <dounut-chart percentageInnerCutout="75"></dounut-chart>
+            <dounut-chart percentageInnerCutout="55"></dounut-chart>
+        </div>
+        
+        
+        <script src="dounut-chart.js"></script>
+        
+        <script>
+            
+          document.querySelectorAll('dounut-chart').forEach( (elem) => { elem.data = [{value: 30, color: 'red'}, {value: 20, color: 'blue'}, {value: 50, color: 'silver'}] })
+            
+        </script>
+    </body>
+</html>
