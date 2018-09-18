@@ -4,10 +4,12 @@ function generateTemplate() {
 
     template.innerHTML = `
         <style>
+            div.box {
+                position: relative;
+            }
             .chart-number {
                 text-anchor: middle;
               }
-
             .chart-label {
               text-transform: uppercase;
               text-anchor: middle;
@@ -21,27 +23,29 @@ function generateTemplate() {
                 text-align: center;
                 text-shadow: 0 -1px 0 #fff;
                 cursor: default;
-                font-size: 100vw;
+            }
+            .chartSummary span {
+                display: block;
             }
         </style>
-         <div class='chartSummary'>
-            <span>All Briaders</span>
-            Briader Status Live
-        </div>
-        <svg viewbox="0 0 250 250"  id="doughnut-chart" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-
-            <g> </g>
-
-            <defs>
-                <filter id="goo" >
-                 <feFlood flood-color="#000" flood-opacity="0.7" result="flood" />                      
-                 <feComposite in="SourceGraphic" />
-                </filter>
-            </defs>
-            <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="-10" dy="-20" fill="#efe" font-size="14" text-anchor="middle" alignment-baseline="middle">                    
-                It was the best of times                    
-            </text>
-        </svg>
+        <div class="box">
+            <div class='chartSummary'>
+               <span>All Briaders</span>
+               Briader Status Live
+           </div>
+           <svg viewbox="0 0 250 250"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+               <g> </g>
+               <defs>
+                   <filter id="goo" >
+                    <feFlood flood-color="#000" flood-opacity="0.7" result="flood" />                      
+                    <feComposite in="SourceGraphic" />
+                   </filter>
+               </defs>
+               <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="-10" dy="-20" fill="#efe" font-size="14" text-anchor="middle" alignment-baseline="middle">                    
+                   It was the best of times                    
+               </text>
+           </svg>
+       </div>
     `;
     return template;
 }
@@ -53,76 +57,248 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
       const shadowRoot = this.attachShadow({ mode: 'open' })
       shadowRoot.appendChild(generateTemplate().content.cloneNode(true))
       this.svg = this.shadowRoot.querySelector('svg')
-      this.svgPT = svg.createSVGPoint()
+      this.svgPT = this.svg.createSVGPoint()
       this.sum = this.shadowRoot.querySelector('.chartSummary')
       this.sumHeader = this.shadowRoot.querySelector('.chartSummary span')
-      this.group = g = this.shadowRoot.querySelector('svg g')
-                
+      this.group = this.shadowRoot.querySelector('svg g')
+      this._data = []          
       this.settings = new Map([
                 ['height', 250],
                 ['width', 250],
                 ['edgeOffset', 10],
-                ['percentageInnerCutout', 65],
+                ['percentageInnerCutout', this.getAttribute('percentageInnerCutout')],
             ]);
+            
+            //console.log(this.getAttribute('percentageInnerCutout'))
               
         this.settings.set('centerX', this.settings.get('width')/2)
         this.settings.set('centerY', this.settings.get('height')/2)
         this.settings.set('doughnutRadius', Math.min(this.settings.get('height') / 2, this.settings.get('width') / 2) - this.settings.get('edgeOffset'))
         this.settings.set('cutoutRadius', this.settings.get('doughnutRadius') * (this.settings.get('percentageInnerCutout') / 100))
-          
-          
-      this.setSelectors()
-      this.scrollCheck = this.checkViewPort.bind(this)
+        
     }
     
-    setSelectors(){
-        this.svg = this.div.querySelector('svg')
-        this.svgPath = this.div.querySelector('path.circle')
-        this.svgText = this.div.querySelector('text.percentage')
-    }
+   
 
     connectedCallback() {        
-        window.addEventListener('scroll', this.scrollCheck)
-        this.checkViewPort()
-        this.render()       
     }
 
     static get observedAttributes() {
-      return ['data-percent'];
+      return [];
     }
 
     attributeChangedCallback(attr, oldValue, newValue) {
         if ( oldValue !== newValue) {
-            this.render()
+            this.settings.set('percentageInnerCutout', newValue)
         }
+    }
+    
+    get data() {
+        return this._data
+    }
+
+    set data(data) {
+        this._data = data;   // validation could be checked here such as only allowing non numerical values
+        if (Array.isArray(this._data) && this._data.length)  this.render()
     }
 
     render() {        
-        this.svgText.innerHTML = `${this.dataset.percent}%`        
-        if ( this.svgPath.classList.contains('fill-in') ) {    
-            this.svgPath.setAttribute('stroke-dasharray', `${this.dataset.percent}, 100`)
-            const clone = this.svg.cloneNode(true);            
-            this.div.replaceChild(clone, this.svg);
-            this.setSelectors()            
-        }        
+        let startRadius = -Math.PI / 2; //-90 degree
+        
+        let data = this._data
+        //console.log(data)
+        let $paths = []
+        let textPaths = []
+        let textXY = []
+        let frag = document.createDocumentFragment()
+        let rotateAnimation = 1
+        let fontSize = 1
+        
+        let segmentTotal = this._data.reduce((a, b) => a + b.value, 0)
+        
+        //console.log('segmentTotal' , segmentTotal)
+        let centerX = this.settings.get('centerX')
+        let centerY = this.settings.get('centerY')
+        let doughnutRadius = this.settings.get('doughnutRadius')
+        let cutoutRadius = this.settings.get('cutoutRadius')
+        let edgeOffset = this.settings.get('edgeOffset')
+        let percentageInnerCutout = this.settings.get('percentageInnerCutout')
+        
+        for (let i = 0, len = data.length; i < len; i++) {
+            const cos = Math.cos,
+                  sin = Math.sin;
+          
+            let segmentAngle = (data[i].value / segmentTotal * (Math.PI * 2)),
+            endRadius = startRadius + segmentAngle,
+            halfRadius = startRadius + (segmentAngle/2),
+            largeArc = (endRadius - startRadius) % (Math.PI * 2) > Math.PI ? 1 : 0,
+            startX = centerX + cos(startRadius) * doughnutRadius,
+            startY = centerY + sin(startRadius) * doughnutRadius,
+            endX2 = centerX + cos(startRadius) * cutoutRadius,
+            endY2 = centerY + sin(startRadius) * cutoutRadius,
+            endX = centerX + cos(endRadius) * doughnutRadius,
+            endY = centerY + sin(endRadius) * doughnutRadius,
+            
+            endXH = centerX + cos(halfRadius) * cutoutRadius,
+            endYH = centerY + sin(halfRadius) * cutoutRadius,
+            
+           
+            
+            dRad = cutoutRadius + ((doughnutRadius-cutoutRadius)/2),
+            startXD = centerX + cos(halfRadius) * dRad,
+            startYD = centerY + sin(halfRadius) * dRad,
+            
+            startXC = centerX + cos(halfRadius) * cutoutRadius,
+            startYC = centerY + sin(halfRadius) * cutoutRadius,
+            
+            startX2 = centerX + cos(endRadius) * cutoutRadius,
+            startY2 = centerY + sin(endRadius) * cutoutRadius;
+            
+            
+            
+             /* console.log(((percentageInnerCutout+ (percentageInnerCutout/2) ) / 100))
+            console.log((edgeOffset*.01));
+            
+            console.log('centerX', centerX)
+            console.log('cos(endRadius)', cos(endRadius))
+            console.log('doughnutRadius', doughnutRadius)
+            console.log('endX', endX)
+            */
+       
+    
+    // console.log('startYD', startYD, startYC)
+            let cmd = [
+            'M', startX, startY, //Move pointer
+            'A', doughnutRadius, doughnutRadius, 0, largeArc, 1, endX, endY, //Draw outer arc path
+            'L', startX2, startY2, //Draw line path(this line connects outer and innner arc paths)
+            'A', cutoutRadius, cutoutRadius, 0, largeArc, 0, endX2, endY2, //Draw inner arc path
+            'Z' //Close path
+            ];
+            let cmd2 = [
+                'M', Math.min(startXC,startXD), startYC, //Move pointer
+                'L', Math.max(startXC,startXD), startYC
+            ];
+            textXY.push({startX: `${startXD}`, startY: `${startYD}`})
+            textPaths[i] = cmd2.join(' ');
+            $paths[i] = cmd.join(' '); 
+            // console.log(' $paths', $paths)
+           
+            startRadius += segmentAngle;
+        
+            let path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+            path.setAttribute('stroke-width', '2')
+            path.setAttribute('stroke', '#fff')
+            path.setAttribute('fill', data[i].color)
+            path.setAttribute('d', $paths[i])
+            path.classList.add('hov')
+            
+            path.dataset.value = data[i].value
+            frag.appendChild(path)
+            
+        }
+        
+        
+        let summarySize = (cutoutRadius + doughnutRadius ) * percentageInnerCutout/10 ,
+                sum = this.sum,
+                sumHeader = this.sumHeader
+            sum.style.color = `white`
+            sum.style.width = `${(summarySize) }%`
+            //sum.style.height = `${summarySize}px`
+            //sum.style.marginLeft = `${100 - summarySize  }px`
+            //sum.style.marginTop = `${-(summarySize / 2 - (summarySize/4))}px`
+           // sum.style.fontSize = `${summarySize * .013}vw`
+           fontSize = (summarySize) * .01;
+            sum.style.fontSize = `${fontSize}rem`
+            sumHeader.style.fontSize = `${fontSize}rem`
+            
+            console.log('summarySize', summarySize)
+            console.log('fontSize', fontSize)
+        
+        
+        
+        for (let i = 0, len = data.length; i < len; i++) {
+            /*<defs>
+                <path id="p1" d="M250 50 A200,200,0,0,1,423.2050807568877,149.99999999999997" fill="#ddd" stroke="#ddd"></path>
+              </defs>
+              <text style="font-size: 24px;">
+                <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
+              </text>
+            */
+            let defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
+            let pathClone = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+            let uuid = performance.now()
+               pathClone.setAttribute('d', textPaths[i])
+                pathClone.setAttribute('id', `p${uuid}-${i}`)
+               // pathClone.setAttribute('stroke', '#ddd')
+               // pathClone.setAttribute('fill', '#ddd')
+            defs.appendChild(pathClone)
+            
+            let textPath = document.createElementNS('http://www.w3.org/2000/svg', 'textPath')
+             textPath.setAttribute('href', `#p${uuid}-${i}`)
+              // textPath.setAttribute('text-anchor', `start`)
+             // textPath.setAttribute('startOffset', `0%`)
+            //textPath.setAttribute('side', `left`)
+            // textPath.setAttribute('path', textPaths[i])
+            textPath.textContent = data[i].value
+            
+            let textStyle = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+             textStyle.setAttribute('fill', `#fff`)
+           textStyle.setAttribute('x', `${textXY[i].startX}`)
+             textStyle.setAttribute('y', `${textXY[i].startY}`)
+             textStyle.setAttribute('text-anchor', `middle`)
+             textStyle.setAttribute('alignment-baseline', `middle`)
+             //text-anchor="middle" alignment-baseline="middle"
+             textStyle.textContent = `${data[i].value}%`
+             textStyle.classList.add('hov')
+             textStyle.dataset.value = data[i].value
+             textStyle.style.cursor = 'default'
+             textStyle.style.fontSize = `${fontSize}rem`
+           // 
+              // textStyle.appendChild(textPath)
+             // <text style="font-size: 24px;">
+            // <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
+            
+             frag.appendChild(defs)
+            frag.appendChild(textStyle)
+      }
+      
+      
+       
+        
+        
+        
+        
+        frag.querySelectorAll('.hov').forEach((elem)=>{
+             elem.addEventListener('mousemove', (e)=>{
+                  // console.log('clicked on', e)
+                  
+                  let loc = this.cursorPoint(e);
+  // Use loc.x and loc.y here
+                 this.svg.querySelector('#infoinfo').setAttribute('x', loc.x ) 
+                 this.svg.querySelector('#infoinfo').setAttribute('y', loc.y ) 
+                 this.svg.querySelector('#infoinfo').textContent = `${e.target.dataset.value}`
+                 
+             })
+             
+             elem.addEventListener('mouseout', (e)=>{
+                 
+                 this.svg.querySelector('#infoinfo').textContent = ''
+                 
+             })
+         })
+         
+         
+          this.group.insertBefore(frag, this.group.firstChild)
+        
+        
         
     }
     
-    //set 
-    
-    checkViewPort() {
-        if ( this.svgPath.getBoundingClientRect().top <= window.innerHeight * 0.75 
-             && this.svgPath.getBoundingClientRect().top > 0) {
-          this.svgPath.classList.add('fill-in')
-          this.render()
-          window.removeEventListener('scroll', this.scrollCheck)
-        }
-    }
     
     
     cursorPoint(evt){
-          pt.x = evt.clientX; pt.y = evt.clientY;
-          return pt.matrixTransform(svg.getScreenCTM().inverse());
+          this.svgPT.x = evt.clientX; this.svgPT.y = evt.clientY;
+          return this.svgPT.matrixTransform(this.svg.getScreenCTM().inverse());
         }
 
 });
