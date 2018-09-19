@@ -31,10 +31,7 @@ function generateTemplate() {
             }
         </style>
         <div class="box">
-            <div class='chartSummary'>
-               <span>All Briaders</span>
-               Briader Status Live
-           </div>
+            
            <svg viewbox="0 0 250 250"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
                <g> </g>
                <defs>
@@ -46,6 +43,14 @@ function generateTemplate() {
                <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="-10" dy="-20" fill="#efe" font-size="14" text-anchor="middle" alignment-baseline="middle">                    
                    It was the best of times                    
                </text>
+    
+                <text id="SummaryTitle" text-anchor="middle" alignment-baseline="middle">
+                    All Briaders
+                </text>
+                <text id="SummaryTagline" text-anchor="middle" alignment-baseline="middle">
+                    Briader Status Live
+                </text>
+    
            </svg>
        </div>
     `;
@@ -60,8 +65,9 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
       shadowRoot.appendChild(generateTemplate().content.cloneNode(true))
       this.svg = this.shadowRoot.querySelector('svg')
       this.svgPT = this.svg.createSVGPoint()
-      this.sum = this.shadowRoot.querySelector('.chartSummary')
-      this.sumHeader = this.shadowRoot.querySelector('.chartSummary span')
+      this.sum = this.svg.querySelector('#chartSummary')
+      this.sumTitle = this.svg.querySelector('#SummaryTitle')
+      this.sumTagline = this.svg.querySelector('#SummaryTagline')
       this.group = this.shadowRoot.querySelector('svg g')
       this._data = []          
       this.settings = new Map([
@@ -203,22 +209,34 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
         let summarySize = (doughnutRadius - (doughnutRadius - cutoutRadius)),
             fontSizeCenter = ( centerX - cutoutRadius ),
                 sum = this.sum,
-                sumHeader = this.sumHeader
-            sum.style.color = `white`
-            sum.style.width = `${summarySize*3}px`
+                sumHeader = this.sumTitle,
+                sumTag = this.sumTagline
+                
+            sumHeader.setAttribute('fill', `#fff`)
+            sumHeader.setAttribute('x', `${centerX}`)
+            sumHeader.setAttribute('y', `${centerY}`)
+            sumHeader.setAttribute('font-size', `${summarySize * .2}`)
+            
+            console.log(sumTag.getComputedTextLength())
+            console.log(sumTag.textContent)
+            console.log(sumTag)
+            console.log(this.sumTitle.getBBox())
+             
+            //sum.style.color = `white`
+            //sum.style.width = `${summarySize*3}px`
             //sum.style.height = `${summarySize}px`
-            sum.style.marginLeft = `${-(summarySize + (summarySize/2))}px`
-            sum.style.marginTop = `${-(summarySize - (summarySize/4))}px`
+            //sum.style.marginLeft = `${-(summarySize + (summarySize/2))}px`
+            //sum.style.marginTop = `${-(summarySize - (summarySize/4))}px`
             
            // sum.style.fontSize = `${summarySize * .013}vw`
            fontSize = (doughnutRadius - cutoutRadius/2) * .01;
-            sum.style.fontSize = `${summarySize *.03 }rem`
-            sumHeader.style.fontSize = `${summarySize *.03 }rem`
+            // sum.style.fontSize = `${summarySize *.03 }rem`
+            // sumHeader.style.fontSize = `${summarySize *.03 }rem`
             
-            console.log('percentageInnerCutout', percentageInnerCutout)
-            console.log('doughnutRadius', doughnutRadius)
-            console.log('cutoutRadius', cutoutRadius)
-            console.log('doughnutRadius - cutoutRadius', doughnutRadius - cutoutRadius)
+            console.log('summarySize width', summarySize*3)
+            //console.log('doughnutRadius', doughnutRadius)
+            //console.log('cutoutRadius', cutoutRadius)
+            //console.log('doughnutRadius - cutoutRadius', doughnutRadius - cutoutRadius)
             console.log('summarySize', summarySize)
             console.log('fontSizeCenter', fontSizeCenter)
             console.log('----------------------')
@@ -273,7 +291,7 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
       
       
        
-        
+        this.wrapTextRect()
         
         
         
@@ -309,5 +327,112 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
           this.svgPT.x = evt.clientX; this.svgPT.y = evt.clientY;
           return this.svgPT.matrixTransform(this.svg.getScreenCTM().inverse());
         }
+        
+        
+        
+        
+   wrapTextRect() {
+       
+       let doughnutRadius = this.settings.get('doughnutRadius')
+        let cutoutRadius = this.settings.get('cutoutRadius')
+        let summarySize = (doughnutRadius - (doughnutRadius - cutoutRadius))
+       let maxWidth = (doughnutRadius - (doughnutRadius - cutoutRadius)) * 2
+       let text = this.sumTagline.textContent + ''
+       this.sumTagline.textContent = ''
+       let height = this.sumTitle.getBBox().height
+       let words = text.split(' ')
+       let frag = document.createDocumentFragment()
+       let tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan')    
+               
+        /*       sumTag = this.sumTagline
+                
+            sum.setAttribute('fill', `#fff`)
+            sum.setAttribute('x', `${centerX}`)
+            sum.setAttribute('y', `${centerY}`)
+            sum.setAttribute('font-size', `${summarySize * .2}`)
+            
+            console.log(sumTag.getComputedTextLength())
+            console.log(sumTag.textContent)
+            console.log(sumTag.getBBox().height)
+            console.log(sumTag.getBBox())
+       */
+    
+    
+    words.forEach( (word, index) => {
+        
+       // let text_node = document.createTextNode(word);
+        //    tspan.appendChild(text_node);
+         tspan.textContent += `${word} `
+         console.log(tspan.firstChild.data.length )
+        console.log('getComputedTextLength', tspan.getComputedTextLength())
+        console.log('maxWidth', maxWidth)
+        console.log('tspan', tspan.textContent )
+        if (tspan.getComputedTextLength() > 10)
+        {
+            
+            tspan.setAttribute("dy", height);
+            frag.appendChild(tspan.cloneNode(true))
+            tspan.textContent = ''
+
+            
+        }
+            
+    })
+    
+    let centerX = this.settings.get('centerX')
+        let centerY = this.settings.get('centerY')
+    this.sumTagline.setAttribute("x", centerX);
+    this.sumTagline.setAttribute("y", centerY+height);
+    this.sumTagline.setAttribute("dy", 5);
+    this.sumTagline.setAttribute("font-size", (summarySize * .2));
+    //tspan.setAttribute("dy", height);
+    this.sumTagline.setAttribute("fill", '#FFF');
+    frag.appendChild(tspan.cloneNode(true))
+    this.sumTagline.appendChild(frag)
+    // this.sum.removechild(this.sumTagline)
+    
+    
+/*
+    for(var i=1; i<words.length; i++)
+    {
+        var len = tspan_element.firstChild.data.length            // Find number of letters in string
+        tspan_element.firstChild.data += " " + words[i];            // Add next word
+        
+        if (tspan_element.getComputedTextLength() > maxWidth)
+        {
+            tspan_element.firstChild.data = tspan_element.firstChild.data.slice(0, len);    // Remove added word
+
+            var tspan_element = document.createElementNS(NS, "tspan");       // Create new tspan element
+            tspan_element.setAttribute("x",  x+padding);
+            tspan_element.setAttribute("dy", fontSize);
+            text_node = document.createTextNode(words[i]);
+            tspan_element.appendChild(text_node);
+            text_element.appendChild(tspan_element);
+        }
+    }
+
+    var height = text_element.getBBox().height +2*padding; //-- get height plus padding
+    myRect.setAttribute('height', height); //-- change rect height
+    */
+    
+}      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
 });
