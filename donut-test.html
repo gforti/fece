@@ -112,6 +112,9 @@
             
           document.querySelectorAll('donut-chart').forEach( (elem) => { elem.data = [{value: 30, color: 'orange', display:'Waring'}, {value: 300, color: 'red', display:'Active'}, {value: 200, color: 'blue', display:'InActive'}, {value: 500, color: 'silver', display:'Running'}] })
             
+           setTimeout(() =>{
+               document.querySelector('donut-chart').data = [{value: 30, color: 'orange', display:'Waring'}, {value: 300, color: 'red', display:'Active'}, {value: 200, color: 'blue', display:'InActive'}, {value: 500, color: 'silver', display:'Running'}].reverse()
+           }, 1000)
         </script>
     </body>
 </html>

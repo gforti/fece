@@ -220,7 +220,7 @@ window.customElements.define('donut-chart', class extends HTMLElement {
          
          
           
-           var cNode = this.group.cloneNode(false);
+           let cNode = this.group.cloneNode(false);
            this.group.parentNode.replaceChild(cNode ,this.group);
            this.group = cNode
            this.group.insertBefore(frag, this.group.firstChild)
@@ -251,10 +251,10 @@ window.customElements.define('donut-chart', class extends HTMLElement {
        console.log('maxWidth', maxWidth)
        console.log('cutoutRadius * 2', (maxWidth ) + (centerYtop - centerY)*2 )
        
-       let text = this.sumTagline.textContent
+       let text = this.dataset.subtitle
        
       
-       let words = this.sumTagline.textContent.toString().trim().split(' ')
+       let words = text.toString().trim().split(' ')
        
        // console.log('----------height', height)
        
