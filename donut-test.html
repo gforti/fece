@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            div.one {
+                width: 30vw;
+                background-color: black;
+            }
+            
+             div.two {
+                width: 20vw;
+                background-color: black;
+            }
+            
+             div.three {
+                width: 10vw;
+                background-color: black;
+            }
+            
+             div.four {
+                width: 40vw;
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <div class="one">
+            <donut-chart data-percentageinnercutout="25"
+                         data-title="All Braiders"
+                         data-subtitle="Braider Status Live Numbers"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="65"
+                         data-title="All Braiders Now"
+                         data-subtitle="Braider Status Live percentages and more"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="75"
+                         data-title="All Braiders"
+                         data-subtitle="Braider Status Live Numbers and more"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="55"
+                         data-title="All Braiders Now"
+                         data-subtitle="Braider Status Live percentages"
+            ></donut-chart>
+        </div>
+        
+         
+        <div class="two">
+            <donut-chart data-percentageinnercutout="25"
+                         data-title="All Braiders"
+                         data-subtitle="Braider Status Live Numbers"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="65"
+                         data-title="All Braiders Now"
+                         data-subtitle="Braider Status Live percentages and more"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="75"
+                         data-title="All Braiders"
+                         data-subtitle="Braider Status Live Numbers and more"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="55"
+                         data-title="All Braiders Now"
+                         data-subtitle="Braider Status Live percentages"
+            ></donut-chart>
+        </div>
+        
+        <div class="three">
+            <donut-chart data-percentageinnercutout="25"
+                         data-title="All Braiders"
+                         data-subtitle="Braider Status Live Numbers"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="65"
+                         data-title="All Braiders Now"
+                         data-subtitle="Braider Status Live percentages and more"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="75"
+                         data-title="All Braiders"
+                         data-subtitle="Braider Status Live Numbers and more"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="55"
+                         data-title="All Braiders Now"
+                         data-subtitle="Braider Status Live percentages"
+            ></donut-chart>
+        </div>
+        
+        
+        <div class="four">
+            <donut-chart data-percentageinnercutout="25"
+                         data-title="All Braiders"
+                         data-subtitle="Braider Status Live Numbers"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="65"
+                         data-title="All Braiders Now"
+                         data-subtitle="Braider Status Live percentages and more"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="75"
+                         data-title="All Braiders"
+                         data-subtitle="Braider Status Live Numbers and more"
+            ></donut-chart>
+            <donut-chart data-percentageinnercutout="55"
+                         data-title="All Braiders Now"
+                         data-subtitle="Braider Status Live percentages"
+            ></donut-chart>
+        </div>
+        
+        <script src="donut-chart.js"></script>
+        
+        <script>
+            
+          document.querySelectorAll('donut-chart').forEach( (elem) => { elem.data = [{value: 30, color: 'orange', display:'Waring'}, {value: 300, color: 'red', display:'Active'}, {value: 200, color: 'blue', display:'InActive'}, {value: 500, color: 'silver', display:'Running'}] })
+            
+        </script>
+    </body>
+</html>

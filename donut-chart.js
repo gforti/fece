@@ -1,48 +1,25 @@
 function generateTemplate() {
 
-    const template = document.createElement('template');
+    const template = document.createElement('template')
 
     template.innerHTML = `
-        <style>
-            
-            .chart-number {
-                text-anchor: middle;
-              }
-            .chart-label {
-              text-transform: uppercase;
-              text-anchor: middle;
-            }
-            
-            
-        </style>
-        <div class="box">
-            
-           <svg viewbox="0 0 250 250"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-               <g> </g>
-               <defs>
-                   <filter id="goo" >
+        <svg viewbox="0 0 250 250"  xmlns="http://www.w3.org/2000/svg">
+            <g></g>
+            <defs>
+                <filter id="hoverBG">
                     <feFlood flood-color="#000" flood-opacity="0.7" result="flood" />                      
                     <feComposite in="SourceGraphic" />
-                   </filter>
-               </defs>
-               <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="0" dy="-15" fill="#efe" font-size="14" text-anchor="middle" alignment-baseline="middle">                    
-                   It was the best of times                    
-               </text>
-    
-                <text id="SummaryTitle" text-anchor="middle" alignment-baseline="middle">
-                    All Briaders
-                </text>
-                <text id="SummaryTagline" text-anchor="middle" alignment-baseline="middle">
-                    Briader Status Live Second line now but will this work
-                </text>
-    
-           </svg>
-       </div>
-    `;
-    return template;
+                </filter>
+            </defs>
+            <text id="infoinfo" filter="url(#hoverBG)" x="0" y="0" dx="0" dy="-15" fill="#efe" text-anchor="middle" alignment-baseline="middle"></text>    
+            <text id="SummaryTitle" text-anchor="middle" alignment-baseline="middle"></text>
+            <text id="SummaryTagline" text-anchor="middle" alignment-baseline="middle"></text>    
+        </svg>
+    `
+    return template
 }
 
-window.customElements.define('dounut-chart', class extends HTMLElement {
+window.customElements.define('donut-chart', class extends HTMLElement {
 
     constructor() {
       super();
@@ -59,16 +36,20 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
                 ['height', 250],
                 ['width', 250],
                 ['edgeOffset', 10],
-                ['percentageInnerCutout', this.getAttribute('percentageInnerCutout')],
+                ['percentageInnerCutout', this.dataset.percentageinnercutout],
             ]);
             
             //console.log(this.getAttribute('percentageInnerCutout'))
+            console.log('this.dataset.percentageInnerCutout', this.dataset.percentageinnercutout)
+            console.log(this.settings.get('percentageInnerCutout'))
               
         this.settings.set('centerX', this.settings.get('width')/2)
         this.settings.set('centerY', this.settings.get('height')/2)
         this.settings.set('doughnutRadius', Math.min(this.settings.get('height') / 2, this.settings.get('width') / 2) - this.settings.get('edgeOffset'))
         this.settings.set('cutoutRadius', this.settings.get('doughnutRadius') * (this.settings.get('percentageInnerCutout') / 100))
         
+        this.sumTitle.textContent = this.dataset.title
+        this.sumTagline.textContent = this.dataset.subtitle
     }
     
    
@@ -77,12 +58,12 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
     }
 
     static get observedAttributes() {
-      return [];
+      return ['data-percentageInnerCutout', 'data-title', 'data-subTitle'];
     }
 
     attributeChangedCallback(attr, oldValue, newValue) {
         if ( oldValue !== newValue) {
-            this.settings.set('percentageInnerCutout', newValue)
+            //this.settings.set('percentageInnerCutout', newValue)
         }
     }
     
@@ -186,6 +167,7 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
             path.classList.add('hov')
             
             path.dataset.value = data[i].value
+            path.dataset.display = data[i].display
             frag.appendChild(path)
             
         }
@@ -263,6 +245,7 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
              textStyle.textContent = `${data[i].value}%`
              textStyle.classList.add('hov')
              textStyle.dataset.value = data[i].value
+             textStyle.dataset.display = data[i].display
              textStyle.style.cursor = 'default'
              textStyle.style.fontSize = `${fontSize}rem`
            // 
@@ -288,7 +271,7 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
   // Use loc.x and loc.y here
                  this.svg.querySelector('#infoinfo').setAttribute('x', loc.x ) 
                  this.svg.querySelector('#infoinfo').setAttribute('y', loc.y ) 
-                 this.svg.querySelector('#infoinfo').textContent = `${e.target.dataset.value}`
+                 this.svg.querySelector('#infoinfo').textContent = `${e.target.dataset.display}`
                  
              })
              
