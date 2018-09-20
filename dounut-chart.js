@@ -48,7 +48,7 @@ function generateTemplate() {
                     All Briaders
                 </text>
                 <text id="SummaryTagline" text-anchor="middle" alignment-baseline="middle">
-                    Briader Status Live
+                    Briader Status Live Second line now will this work
                 </text>
     
            </svg>
@@ -214,13 +214,13 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
                 
             sumHeader.setAttribute('fill', `#fff`)
             sumHeader.setAttribute('x', `${centerX}`)
-            sumHeader.setAttribute('y', `${centerY}`)
-            sumHeader.setAttribute('font-size', `${summarySize * .2}`)
+            sumHeader.setAttribute('y', `${centerY - summarySize/3}`)
+            sumHeader.setAttribute('font-size', `${summarySize * .3}`)
             
-            console.log(sumTag.getComputedTextLength())
-            console.log(sumTag.textContent)
-            console.log(sumTag)
-            console.log(this.sumTitle.getBBox())
+            // console.log(sumTag.getComputedTextLength())
+            // console.log(sumTag.textContent)
+            // console.log(sumTag)
+            // console.log(this.sumTitle.getBBox())
              
             //sum.style.color = `white`
             //sum.style.width = `${summarySize*3}px`
@@ -233,12 +233,12 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
             // sum.style.fontSize = `${summarySize *.03 }rem`
             // sumHeader.style.fontSize = `${summarySize *.03 }rem`
             
-            console.log('summarySize width', summarySize*3)
+            // console.log('summarySize width', summarySize*3)
             //console.log('doughnutRadius', doughnutRadius)
             //console.log('cutoutRadius', cutoutRadius)
             //console.log('doughnutRadius - cutoutRadius', doughnutRadius - cutoutRadius)
-            console.log('summarySize', summarySize)
-            console.log('fontSizeCenter', fontSizeCenter)
+            // console.log('summarySize', summarySize)
+            // console.log('fontSizeCenter', fontSizeCenter)
             console.log('----------------------')
         
         
@@ -336,13 +336,46 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
        let doughnutRadius = this.settings.get('doughnutRadius')
         let cutoutRadius = this.settings.get('cutoutRadius')
         let summarySize = (doughnutRadius - (doughnutRadius - cutoutRadius))
-       let maxWidth = (doughnutRadius - (doughnutRadius - cutoutRadius)) * 2
-       let text = this.sumTagline.textContent + ''
+       let maxWidth = cutoutRadius * 2
+       let centerX = this.settings.get('centerX')
+        let centerY = this.settings.get('centerY')
+        let centerYtop = centerY - summarySize/18
+      
+       console.log('maxWidth', maxWidth)
+       console.log('cutoutRadius * 2', (maxWidth ) + (centerYtop - centerY)*2 )
+       
+       let text = this.sumTagline.textContent
+       
+      
+       let words = this.sumTagline.textContent.toString().trim().split(' ')
+       
+       // console.log('----------height', height)
+       
        this.sumTagline.textContent = ''
-       let height = this.sumTitle.getBBox().height
-       let words = text.split(' ')
-       let frag = document.createDocumentFragment()
-       let tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan')    
+       
+       
+        
+    this.sumTagline.setAttribute("x", centerX);
+    this.sumTagline.setAttribute("y", centerYtop);
+    this.sumTagline.setAttribute("font-size", (summarySize * .24));
+    this.sumTagline.setAttribute("fill", '#FFF');
+       
+       
+        
+       
+       let tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan')
+       
+       tspan.appendChild( document.createTextNode(words.shift()))
+       tspan.setAttribute("x", centerX);
+       tspan.setAttribute("y", centerYtop);
+       this.sumTagline.appendChild(tspan);  
+       
+       
+        let height = ~~this.sumTagline.getBBox().height
+      
+       let y = ~~centerYtop+height
+       
+       console.log('this.sumTagline.getBBox()()', this.sumTagline.getBBox())
                
         /*       sumTag = this.sumTagline
                 
@@ -357,38 +390,65 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
             console.log(sumTag.getBBox())
        */
     
-    
+    let line = 1;
     words.forEach( (word, index) => {
         
        // let text_node = document.createTextNode(word);
         //    tspan.appendChild(text_node);
-         tspan.textContent += `${word} `
-         console.log(tspan.firstChild.data.length )
-        console.log('getComputedTextLength', tspan.getComputedTextLength())
-        console.log('maxWidth', maxWidth)
-        console.log('tspan', tspan.textContent )
-        if (tspan.getComputedTextLength() > 10)
+         let len = tspan.firstChild.data.length            // Find number of letters in string
+        // tspan.firstChild.data += ` ${word}`;
+         tspan.firstChild.data += " " + word;  
+         
+         
+         // console.log(tspan.firstChild.data.length )
+        // console.log('word', word)
+         console.log('tspan', tspan)
+         console.log('tspan.firstChild', tspan.firstChild)
+         console.log('tspan.firstChild.data', tspan.firstChild.data)
+         console.log('getComputedTextLength', tspan.getComputedTextLength())
+         console.log('maxWidth', maxWidth, maxWidth/index * .100)
+        // console.log('tspan', tspan.textContent )
+        //(centerYtop*2 ) -maxWidth
+        
+        let dy = centerYtop + (height * line)
+        
+        let checkWidth = maxWidth - (dy/2 - centerY/2)
+        //console.log('checkWidth', checkWidth)
+        
+        if (tspan.getComputedTextLength() > checkWidth)
         {
             
-            tspan.setAttribute("dy", height);
-            frag.appendChild(tspan.cloneNode(true))
-            tspan.textContent = ''
-
+            tspan.firstChild.data = tspan.firstChild.data.slice(0, len);
             
+            line++
+            console.log('checkWidth --------->', checkWidth)
+            tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan')
+            tspan.appendChild( document.createTextNode(word))
+            tspan.setAttribute("y", dy);
+            tspan.setAttribute("x", centerX);
+            tspan.setAttribute("w", checkWidth);
+            
+            
+            this.sumTagline.appendChild(tspan)
+            
+            /*
+            var tspan_element = document.createElementNS(NS, "tspan");       // Create new tspan element
+            tspan_element.setAttribute("x",  x+padding);
+            tspan_element.setAttribute("dy", fontSize);
+            text_node = document.createTextNode(words[i]);
+            tspan_element.appendChild(text_node);
+            text_element.appendChild(tspan_element);
+                */
+
         }
             
     })
     
-    let centerX = this.settings.get('centerX')
-        let centerY = this.settings.get('centerY')
-    this.sumTagline.setAttribute("x", centerX);
-    this.sumTagline.setAttribute("y", centerY+height);
-    this.sumTagline.setAttribute("dy", 5);
-    this.sumTagline.setAttribute("font-size", (summarySize * .2));
-    //tspan.setAttribute("dy", height);
-    this.sumTagline.setAttribute("fill", '#FFF');
-    frag.appendChild(tspan.cloneNode(true))
-    this.sumTagline.appendChild(frag)
+    
+        
+   
+    //frag.appendChild(tspan.cloneNode(true))
+    //this.sumTagline.appendChild(frag)
     // this.sum.removechild(this.sumTagline)
     
     
