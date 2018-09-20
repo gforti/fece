@@ -4,10 +4,7 @@ function generateTemplate() {
 
     template.innerHTML = `
         <style>
-            div.box {
-                position: relative;
-                
-            }
+            
             .chart-number {
                 text-anchor: middle;
               }
@@ -16,19 +13,7 @@ function generateTemplate() {
               text-anchor: middle;
             }
             
-            .chartSummary {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                color: #d5d5d5;
-                text-align: center;
-                text-shadow: 0 -1px 0 #fff;
-                cursor: default;
-                z-index: 0;
-            }
-            .chartSummary span {
-                display: block;
-            }
+            
         </style>
         <div class="box">
             
@@ -40,7 +25,7 @@ function generateTemplate() {
                     <feComposite in="SourceGraphic" />
                    </filter>
                </defs>
-               <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="-10" dy="-20" fill="#efe" font-size="14" text-anchor="middle" alignment-baseline="middle">                    
+               <text id="infoinfo" filter="url(#goo)" x="0" y="0" dx="0" dy="-15" fill="#efe" font-size="14" text-anchor="middle" alignment-baseline="middle">                    
                    It was the best of times                    
                </text>
     
@@ -426,71 +411,18 @@ window.customElements.define('dounut-chart', class extends HTMLElement {
             tspan.appendChild( document.createTextNode(word))
             tspan.setAttribute("y", dy);
             tspan.setAttribute("x", centerX);
-            tspan.setAttribute("w", checkWidth);
-            
-            
+            tspan.setAttribute("width", checkWidth);
+                        
             this.sumTagline.appendChild(tspan)
-            
-            /*
-            var tspan_element = document.createElementNS(NS, "tspan");       // Create new tspan element
-            tspan_element.setAttribute("x",  x+padding);
-            tspan_element.setAttribute("dy", fontSize);
-            text_node = document.createTextNode(words[i]);
-            tspan_element.appendChild(text_node);
-            text_element.appendChild(tspan_element);
-                */
+      
 
         }
             
     })
     
-    
-        
-   
-    //frag.appendChild(tspan.cloneNode(true))
-    //this.sumTagline.appendChild(frag)
-    // this.sum.removechild(this.sumTagline)
-    
-    
-/*
-    for(var i=1; i<words.length; i++)
-    {
-        var len = tspan_element.firstChild.data.length            // Find number of letters in string
-        tspan_element.firstChild.data += " " + words[i];            // Add next word
-        
-        if (tspan_element.getComputedTextLength() > maxWidth)
-        {
-            tspan_element.firstChild.data = tspan_element.firstChild.data.slice(0, len);    // Remove added word
 
-            var tspan_element = document.createElementNS(NS, "tspan");       // Create new tspan element
-            tspan_element.setAttribute("x",  x+padding);
-            tspan_element.setAttribute("dy", fontSize);
-            text_node = document.createTextNode(words[i]);
-            tspan_element.appendChild(text_node);
-            text_element.appendChild(tspan_element);
-        }
-    }
-
-    var height = text_element.getBBox().height +2*padding; //-- get height plus padding
-    myRect.setAttribute('height', height); //-- change rect height
-    */
     
 }      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         
