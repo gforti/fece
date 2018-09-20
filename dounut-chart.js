@@ -33,7 +33,7 @@ function generateTemplate() {
                     All Briaders
                 </text>
                 <text id="SummaryTagline" text-anchor="middle" alignment-baseline="middle">
-                    Briader Status Live Second line now will this work
+                    Briader Status Live Second line now but will this work
                 </text>
     
            </svg>
