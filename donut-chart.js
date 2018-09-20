@@ -38,11 +38,6 @@ window.customElements.define('donut-chart', class extends HTMLElement {
                 ['edgeOffset', 10],
                 ['percentageInnerCutout', this.dataset.percentageinnercutout],
             ]);
-            
-            //console.log(this.getAttribute('percentageInnerCutout'))
-            console.log('this.dataset.percentageInnerCutout', this.dataset.percentageinnercutout)
-            console.log(this.settings.get('percentageInnerCutout'))
-              
         this.settings.set('centerX', this.settings.get('width')/2)
         this.settings.set('centerY', this.settings.get('height')/2)
         this.settings.set('doughnutRadius', Math.min(this.settings.get('height') / 2, this.settings.get('width') / 2) - this.settings.get('edgeOffset'))
@@ -54,7 +49,7 @@ window.customElements.define('donut-chart', class extends HTMLElement {
     
    
 
-    connectedCallback() {        
+    connectedCallback() {
     }
 
     static get observedAttributes() {
@@ -80,17 +75,13 @@ window.customElements.define('donut-chart', class extends HTMLElement {
         let startRadius = -Math.PI / 2; //-90 degree
         
         let data = this._data
-        //console.log(data)
         let $paths = []
         let textPaths = []
         let textXY = []
         let frag = document.createDocumentFragment()
-        let rotateAnimation = 1
-        let fontSize = 1
-        
+        let fontSize = 1        
         let segmentTotal = this._data.reduce((a, b) => a + b.value, 0)
-        
-        //console.log('segmentTotal' , segmentTotal)
+
         let centerX = this.settings.get('centerX')
         let centerY = this.settings.get('centerY')
         let doughnutRadius = this.settings.get('doughnutRadius')
@@ -103,44 +94,27 @@ window.customElements.define('donut-chart', class extends HTMLElement {
                   sin = Math.sin;
           
             let segmentAngle = (data[i].value / segmentTotal * (Math.PI * 2)),
-            endRadius = startRadius + segmentAngle,
-            halfRadius = startRadius + (segmentAngle/2),
-            largeArc = (endRadius - startRadius) % (Math.PI * 2) > Math.PI ? 1 : 0,
-            startX = centerX + cos(startRadius) * doughnutRadius,
-            startY = centerY + sin(startRadius) * doughnutRadius,
-            endX2 = centerX + cos(startRadius) * cutoutRadius,
-            endY2 = centerY + sin(startRadius) * cutoutRadius,
-            endX = centerX + cos(endRadius) * doughnutRadius,
-            endY = centerY + sin(endRadius) * doughnutRadius,
-            
-            endXH = centerX + cos(halfRadius) * cutoutRadius,
-            endYH = centerY + sin(halfRadius) * cutoutRadius,
-            
-           
-            
-            dRad = cutoutRadius + ((doughnutRadius-cutoutRadius)/2),
-            startXD = centerX + cos(halfRadius) * dRad,
-            startYD = centerY + sin(halfRadius) * dRad,
-            
-            startXC = centerX + cos(halfRadius) * cutoutRadius,
-            startYC = centerY + sin(halfRadius) * cutoutRadius,
-            
-            startX2 = centerX + cos(endRadius) * cutoutRadius,
-            startY2 = centerY + sin(endRadius) * cutoutRadius;
+                endRadius = startRadius + segmentAngle,
+                halfRadius = startRadius + (segmentAngle/2),
+                largeArc = (endRadius - startRadius) % (Math.PI * 2) > Math.PI ? 1 : 0,
+                startX = centerX + cos(startRadius) * doughnutRadius,
+                startY = centerY + sin(startRadius) * doughnutRadius,
+                endX2 = centerX + cos(startRadius) * cutoutRadius,
+                endY2 = centerY + sin(startRadius) * cutoutRadius,
+                endX = centerX + cos(endRadius) * doughnutRadius,
+                endY = centerY + sin(endRadius) * doughnutRadius,
+
+                dRad = cutoutRadius + ((doughnutRadius-cutoutRadius)/2),
+                startXD = centerX + cos(halfRadius) * dRad,
+                startYD = centerY + sin(halfRadius) * dRad,
+
+                startXC = centerX + cos(halfRadius) * cutoutRadius,
+                startYC = centerY + sin(halfRadius) * cutoutRadius,
+
+                startX2 = centerX + cos(endRadius) * cutoutRadius,
+                startY2 = centerY + sin(endRadius) * cutoutRadius;
             
             
-            
-             /* console.log(((percentageInnerCutout+ (percentageInnerCutout/2) ) / 100))
-            console.log((edgeOffset*.01));
-            
-            console.log('centerX', centerX)
-            console.log('cos(endRadius)', cos(endRadius))
-            console.log('doughnutRadius', doughnutRadius)
-            console.log('endX', endX)
-            */
-       
-    
-    // console.log('startYD', startYD, startYC)
             let cmd = [
             'M', startX, startY, //Move pointer
             'A', doughnutRadius, doughnutRadius, 0, largeArc, 1, endX, endY, //Draw outer arc path
@@ -155,7 +129,7 @@ window.customElements.define('donut-chart', class extends HTMLElement {
             textXY.push({startX: `${startXD}`, startY: `${startYD}`})
             textPaths[i] = cmd2.join(' ');
             $paths[i] = cmd.join(' '); 
-            // console.log(' $paths', $paths)
+         
            
             startRadius += segmentAngle;
         
@@ -176,85 +150,49 @@ window.customElements.define('donut-chart', class extends HTMLElement {
         let summarySize = (doughnutRadius - (doughnutRadius - cutoutRadius)),
             fontSizeCenter = ( centerX - cutoutRadius ),
                 sum = this.sum,
-                sumHeader = this.sumTitle,
-                sumTag = this.sumTagline
+                sumHeader = this.sumTitle
                 
             sumHeader.setAttribute('fill', `#fff`)
             sumHeader.setAttribute('x', `${centerX}`)
             sumHeader.setAttribute('y', `${centerY - summarySize/3}`)
             sumHeader.setAttribute('font-size', `${summarySize * .3}`)
             
-            // console.log(sumTag.getComputedTextLength())
-            // console.log(sumTag.textContent)
-            // console.log(sumTag)
-            // console.log(this.sumTitle.getBBox())
-             
-            //sum.style.color = `white`
-            //sum.style.width = `${summarySize*3}px`
-            //sum.style.height = `${summarySize}px`
-            //sum.style.marginLeft = `${-(summarySize + (summarySize/2))}px`
-            //sum.style.marginTop = `${-(summarySize - (summarySize/4))}px`
-            
-           // sum.style.fontSize = `${summarySize * .013}vw`
            fontSize = (doughnutRadius - cutoutRadius/2) * .01;
-            // sum.style.fontSize = `${summarySize *.03 }rem`
-            // sumHeader.style.fontSize = `${summarySize *.03 }rem`
-            
-            // console.log('summarySize width', summarySize*3)
-            //console.log('doughnutRadius', doughnutRadius)
-            //console.log('cutoutRadius', cutoutRadius)
-            //console.log('doughnutRadius - cutoutRadius', doughnutRadius - cutoutRadius)
-            // console.log('summarySize', summarySize)
-            // console.log('fontSizeCenter', fontSizeCenter)
-            console.log('----------------------')
+           
         
         
         
         for (let i = 0, len = data.length; i < len; i++) {
-            /*<defs>
-                <path id="p1" d="M250 50 A200,200,0,0,1,423.2050807568877,149.99999999999997" fill="#ddd" stroke="#ddd"></path>
-              </defs>
-              <text style="font-size: 24px;">
-                <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
-              </text>
-            */
+            
             let defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
             let pathClone = document.createElementNS('http://www.w3.org/2000/svg', 'path')
             let uuid = performance.now()
-               pathClone.setAttribute('d', textPaths[i])
+                pathClone.setAttribute('d', textPaths[i])
                 pathClone.setAttribute('id', `p${uuid}-${i}`)
-               // pathClone.setAttribute('stroke', '#ddd')
-               // pathClone.setAttribute('fill', '#ddd')
-            defs.appendChild(pathClone)
+              
+                defs.appendChild(pathClone)
             
             let textPath = document.createElementNS('http://www.w3.org/2000/svg', 'textPath')
-             textPath.setAttribute('href', `#p${uuid}-${i}`)
-              // textPath.setAttribute('text-anchor', `start`)
-             // textPath.setAttribute('startOffset', `0%`)
-            //textPath.setAttribute('side', `left`)
-            // textPath.setAttribute('path', textPaths[i])
-            textPath.textContent = data[i].value
+                textPath.setAttribute('href', `#p${uuid}-${i}`)
+           
+                textPath.textContent = data[i].value
             
             let textStyle = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-             textStyle.setAttribute('fill', `#fff`)
-           textStyle.setAttribute('x', `${textXY[i].startX}`)
-             textStyle.setAttribute('y', `${textXY[i].startY}`)
-             textStyle.setAttribute('text-anchor', `middle`)
-             textStyle.setAttribute('alignment-baseline', `middle`)
-             //text-anchor="middle" alignment-baseline="middle"
-             textStyle.textContent = `${data[i].value}%`
-             textStyle.classList.add('hov')
-             textStyle.dataset.value = data[i].value
-             textStyle.dataset.display = data[i].display
-             textStyle.style.cursor = 'default'
-             textStyle.style.fontSize = `${fontSize}rem`
-           // 
-              // textStyle.appendChild(textPath)
-             // <text style="font-size: 24px;">
-            // <textPath xlink:href="#p1" startOffset="50%" text-anchor="middle">1test text</textPath>
-            
-             frag.appendChild(defs)
-            frag.appendChild(textStyle)
+                textStyle.setAttribute('fill', `#fff`)
+                textStyle.setAttribute('x', `${textXY[i].startX}`)
+                textStyle.setAttribute('y', `${textXY[i].startY}`)
+                textStyle.setAttribute('text-anchor', `middle`)
+                textStyle.setAttribute('alignment-baseline', `middle`)
+             
+                textStyle.textContent = `${data[i].value}%`
+                textStyle.classList.add('hov')
+                textStyle.dataset.value = data[i].value
+                textStyle.dataset.display = data[i].display
+                textStyle.style.cursor = 'default'
+                textStyle.style.fontSize = `${fontSize}rem`
+          
+                frag.appendChild(defs)
+                frag.appendChild(textStyle)
       }
       
       
@@ -268,23 +206,24 @@ window.customElements.define('donut-chart', class extends HTMLElement {
                   // console.log('clicked on', e)
                   
                   let loc = this.cursorPoint(e);
-  // Use loc.x and loc.y here
+                // Use loc.x and loc.y here
                  this.svg.querySelector('#infoinfo').setAttribute('x', loc.x ) 
                  this.svg.querySelector('#infoinfo').setAttribute('y', loc.y ) 
                  this.svg.querySelector('#infoinfo').textContent = `${e.target.dataset.display}`
                  
              })
              
-             elem.addEventListener('mouseout', (e)=>{
-                 
-                 this.svg.querySelector('#infoinfo').textContent = ''
-                 
+             elem.addEventListener('mouseout', (e)=>{                 
+                 this.svg.querySelector('#infoinfo').textContent = ''                 
              })
          })
          
          
-          this.group.insertBefore(frag, this.group.firstChild)
-        
+          
+           var cNode = this.group.cloneNode(false);
+           this.group.parentNode.replaceChild(cNode ,this.group);
+           this.group = cNode
+           this.group.insertBefore(frag, this.group.firstChild)
         
         
     }
@@ -343,7 +282,7 @@ window.customElements.define('donut-chart', class extends HTMLElement {
       
        let y = ~~centerYtop+height
        
-       console.log('this.sumTagline.getBBox()()', this.sumTagline.getBBox())
+       // console.log('this.sumTagline.getBBox()()', this.sumTagline.getBBox())
                
         /*       sumTag = this.sumTagline
                 
@@ -370,11 +309,11 @@ window.customElements.define('donut-chart', class extends HTMLElement {
          
          // console.log(tspan.firstChild.data.length )
         // console.log('word', word)
-         console.log('tspan', tspan)
+        /* console.log('tspan', tspan)
          console.log('tspan.firstChild', tspan.firstChild)
          console.log('tspan.firstChild.data', tspan.firstChild.data)
          console.log('getComputedTextLength', tspan.getComputedTextLength())
-         console.log('maxWidth', maxWidth, maxWidth/index * .100)
+         console.log('maxWidth', maxWidth, maxWidth/index * .100) */
         // console.log('tspan', tspan.textContent )
         //(centerYtop*2 ) -maxWidth
         
