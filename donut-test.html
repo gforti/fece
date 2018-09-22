@@ -4,6 +4,7 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://d3js.org/d3.v4.min.js"></script>
         <style>
             div.one {
                 width: 30vw;
@@ -27,12 +28,20 @@
         </style>
     </head>
     <body>
+        
     
+         
+            
+            
         <div class="one">
-            <donut-chart data-percentageinnercutout="25"
-                         data-title="All Braiders"
-                         data-subtitle="Braider Status Live Numbers"
-            ></donut-chart>
+            
+            <svg-zoom>
+                <donut-chart data-percentageinnercutout="25"
+                             data-title="All Braiders"
+                             data-subtitle="Braider Status Live Numbers"
+                ></donut-chart>
+            </svg-zoom>
+           
             <donut-chart data-percentageinnercutout="65"
                          data-title="All Braiders Now"
                          data-subtitle="Braider Status Live percentages and more"
@@ -106,15 +115,33 @@
             ></donut-chart>
         </div>
         
-        <script src="donut-chart.js"></script>
         
+        <script src="donut-chart.js"></script>
+        <script src="svg-zoom.js"></script>
         <script>
             
           document.querySelectorAll('donut-chart').forEach( (elem) => { elem.data = [{value: 30, color: 'orange', display:'Waring'}, {value: 300, color: 'red', display:'Active'}, {value: 200, color: 'blue', display:'InActive'}, {value: 500, color: 'silver', display:'Running'}] })
             
-           setTimeout(() =>{
+           /*setTimeout(() =>{
                document.querySelector('donut-chart').data = [{value: 30, color: 'orange', display:'Waring'}, {value: 300, color: 'red', display:'Active'}, {value: 200, color: 'blue', display:'InActive'}, {value: 500, color: 'silver', display:'Running'}].reverse()
-           }, 1000)
+           }, 1000)*/
+           
+         /*  let scale = 1, x=0, y=0;
+         const MIN_SCALE = 1;
+         const MAX_SCALE = 5;
+         
+           document.querySelector('donut-chart').addEventListener('wheel', (e)=>{
+             e.preventDefault();
+             //console.log(e)
+             
+             //zoomIntensity = 0.2;
+             //wheel = event.wheelDelta/120;
+             scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale - e.wheelDelta / 100));
+             // scale = nextScale
+             e.target.setAttribute("transform", `translate(${x}, ${y}) scale(${scale})`);
+             
+         })*/
+
         </script>
     </body>
 </html>
